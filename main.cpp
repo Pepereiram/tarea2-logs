@@ -1,4 +1,11 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+//main xd
 int main(){
-  cout << "holaxd" << endl;
+  //
   return 0;
 }
+
+
+
