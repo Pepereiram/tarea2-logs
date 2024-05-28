@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> ii;
+typedef pair<double, int> ii;
 
 /*
 Como estructura Q, se utiliza un Heap como cola de prioridad, este debe soportar las funciona-
@@ -10,7 +10,7 @@ un elemento de Q reordena la estructura del árbol
 */
 struct ColaPrioridad {
     vector<ii> heap;
-    unordered_map<int, int> posMap; // Map to store the position of nodes in the heap
+    unordered_map<int, double> posMap; // Map to store the position of nodes in the heap
 
     void push(ii p) {
         heap.push_back(p);
@@ -50,7 +50,7 @@ struct ColaPrioridad {
     }
 
     // Función para disminuir la clave (distancia) de un nodo específico
-    void decreaseKey(int node, int newDist) {
+    void decreaseKey(int node, double newDist) {
         if (posMap.find(node) == posMap.end()) {
             throw runtime_error("Node not found in the heap");
         }

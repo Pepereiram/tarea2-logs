@@ -2,7 +2,7 @@
 using namespace std;
 #include "heap.h"
 // Definimos los pares así al inicio para facilidad de su uso en la priority_queue
-typedef pair<int, int> ii;
+typedef pair<double, int> ii;
 
 #define INF 1 << 23
 
@@ -15,7 +15,7 @@ typedef pair<int, int> ii;
 */
 
 void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
-                            vector<int>* pdistancia, vector<int>* pPrevios) { //n numero de nodos, s nodo inicial, gr es la lista de adyacencia del grafo que ahora tiene pares (distancia, nodo)
+                            vector<double>* pdistancia, vector<int>* pPrevios) { //n numero de nodos, s nodo inicial, gr es la lista de adyacencia del grafo que ahora tiene pares (distancia, nodo)
     //PASO 1:
     // Cambiamos el tamaño de distancia y previos
     (*pdistancia).resize(n);
@@ -74,9 +74,9 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
     //PASO 7: 
     // Se retorna distancia y previos(ya se modificaron utilizando punteros)
 }
-
+/*
 int main(){
-    vector<int> distancias; 
+    vector<double> distancias; 
     vector<int> previos;
     //asjdnasjnads el tamaño del grafo
     int n = 5;
@@ -100,12 +100,14 @@ int main(){
     //hacer cola de prioridad
     ColaPrioridad cola;
     //probar la weaita jajaja
-    caminoMasCorto(0, n, gr, cola, &distancias, &previos);
+    caminoMasCorto(2, n, gr, cola, &distancias, &previos);
 
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < n; i++) {
         cout << "Distancia para " << i << " es: " << distancias[i] << endl; 
         cout << "Previos para " << i << " es: " << previos[i] << endl; 
     }
 
     return 0;
 }
+*/
+// how to compile: g++ -std=c++11 Dijkstra.cpp -o djPenguin
