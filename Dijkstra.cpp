@@ -54,17 +54,14 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
     // Mientras la cola no esté vacía, tenemos nodos que revisar
     int previo = -1;
     while(!cola.empty()) {
-        cola.printHeap();
-        // Sacamos el nodo que esté a menor distancia ahora mismo
+  
+        // Sacamos el nodo que esté a menor distancia ahora mismo  
         auto [nodo_d, nodo] = cola.top();
         cola.pop();
-
-        //cambiar previo?   
 
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
         for(auto [vecino_d, vecino]: gr[nodo]) {
             // Si la distancia guardada para el vecino es menor a la distancia de nodo + el peso
-            cout <<  "vecino de " << nodo << " es: "<< vecino << endl;
             if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
                 (*pdistancia)[vecino] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
                 (*pPrevios)[vecino] = nodo;
@@ -100,8 +97,6 @@ int main(){
     gr[4].push_back({5, 3});
     gr[3].push_back({5, 4});
     
-
-
     //hacer cola de prioridad
     ColaPrioridad cola;
     //probar la weaita jajaja

@@ -41,7 +41,7 @@ struct ColaPrioridad {
         posMap[heap[0].second] = 0;
         posMap.erase(heap[final].second);
         heap.pop_back();
-        heapify(heap, final+1, 0);
+        heapify(heap, final, 0);
     }
 
     // Verifica si el heap está vacío
