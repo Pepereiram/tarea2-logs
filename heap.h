@@ -11,16 +11,19 @@ un elemento de Q reordena la estructura del árbol
 struct ColaPrioridad {
     vector<ii> heap;
     unordered_map<int, int> posMap; // Map to store the position of nodes in the heap
-    // { nodo : distancia, nod// Helper functionso2 : distancia2 , .....
-    // }
-    // posMap.find()
-    
-    // Inserta un elemento en el heap
+
     void push(ii p) {
         heap.push_back(p);
         int index = heap.size() - 1;
         posMap[p.second] = index;
-        push_heap(heap.begin(), heap.end(), greater<ii>());
+
+        //while(heap[parent(index)] > heap[index] && index != 0){
+        //    // haremos el push_heap a mano  
+        //    swap(heap[parent(index)], heap[index]);
+        //    posMap[heap[parent(index)].second] = parent(index);
+        //    posMap[heap[index].second] = index;
+        //    index = parent(index);
+        //}
     }
 
     // Devuelve el elemento con mayor prioridad (el mínimo en este caso)
@@ -33,12 +36,12 @@ struct ColaPrioridad {
 
     // Elimina el elemento con mayor prioridad (el mínimo en este caso)
     void pop() {
-        if (heap.empty()) {
-            throw runtime_error("Heap is empty");
-        }
-        pop_heap(heap.begin(), heap.end(), greater<ii>());
-        posMap.erase(heap.back().second);
+        int final = heap.size()-1;
+        swap(heap[0], heap[final]);
+        posMap[heap[0].second] = 0;
+        posMap.erase(heap[final].second);
         heap.pop_back();
+        heapify(heap, final+1, 0);
     }
 
     // Verifica si el heap está vacío
@@ -47,10 +50,11 @@ struct ColaPrioridad {
     }
 
     // Función para disminuir la clave (distancia) de un nodo específico
-    // input: 
     void decreaseKey(int node, int newDist) {
+        if (posMap.find(node) == posMap.end()) {
+            throw runtime_error("Node not found in the heap");
+        }
         int index = posMap[node];
-        cout << "index: " << index << endl;
         heap[index].first = newDist;
         // Adjust the heap after decrease
         while (index != 0 && heap[parent(index)] > heap[index]) {
@@ -61,6 +65,29 @@ struct ColaPrioridad {
         }
     }
 
+    void heapify(vector<ii>& array_in, int array_size, int subtree_root_index) {
+        // 
+        int largest_value = subtree_root_index;
+        int left = 2*subtree_root_index + 1;
+        int right = 2*subtree_root_index + 2;
+            
+        if (left < array_size && array_in[left] < array_in[largest_value]){
+            largest_value = left;
+        }
+
+        if (right < array_size && array_in[right] < array_in[largest_value]){
+            largest_value = right;
+        }   
+
+        if (largest_value != subtree_root_index ) {
+            swap(array_in[subtree_root_index], array_in[largest_value]);
+            // Cambiamos los indices en el map para que coincidan con los nuevos indices
+            posMap[array_in[subtree_root_index].second] = subtree_root_index;
+            posMap[array_in[largest_value].second] = largest_value;
+            heapify(array_in, array_size, largest_value);
+        }
+    }
+    
     // Imprime los elementos del heap (para depuración)
     void printHeap() const {
         for (const auto& element : heap) {
@@ -68,6 +95,7 @@ struct ColaPrioridad {
         }
         cout << endl;
     }
+
 
 private:
     // Helper functions
@@ -84,6 +112,8 @@ private:
     }
 };
 
+
+/*
 int main() {
     ColaPrioridad cp;
 
@@ -118,76 +148,7 @@ int main() {
     cp.printHeap();
 
     return 0;
-}
-
-// how to compile: g++ -std=c++11 heap.cpp -o heap
+} */
 
 
-/*
-HEAP(A,i) {
-    l = LEFT(i)
-    r = RIGHT(i)
-    if (l <= A.heap-size && A[l] > A[i]) {
-        largest = l
-    } else {
-        largest = i
-    }
-    if (r <= A.heap-size && A[r] > A[largest]) {
-        largest = r
-    }
-    if (largest != i){
-        exchange A[i] with A[largest]
-        HEAP(A, largest)
-    }
-}
-*/
-
-//
-//struct cola_prioridad {
-//    vector<ii> heap;
-//    void push(ii p) {
-//        heap.push_back(p);
-//        push_heap(heap.begin(), heap.end(), greater<ii>());
-//    }
-//    ii top() {
-//        return heap.front();
-//    }
-//    void pop() {
-//        pop_heap(heap.begin(), heap.end(), greater<ii>());
-//        heap.pop_back();
-//    }
-//    bool empty() {
-//        return heap.empty();
-//    }
-//    void printHeap() const {
-//        for (const auto& element : heap) {
-//            cout << "(" << element.first << ", " << element.second << ") ";
-//        }
-//        cout << endl;
-//    }
-//    // decrease_key
-//};
-//
-
-//int main() {
-//    ColaPrioridad cp;
-//
-//    // Insertar elementos en el heap
-//    cp.push({3, 100});
-//    cp.push({1, 200});
-//    cp.push({2, 300});
-//    cp.push({4, 400});
-//
-//    cout << "Heap actual: ";
-//    cp.printHeap();
-//
-//    // Mostrar el elemento de mayor prioridad (mínimo)
-//    cout << "Elemento de mayor prioridad: (" << cp.top().first << ", " << cp.top().second << ")" << endl;
-//
-//    // Eliminar el elemento de mayor prioridad (mínimo)
-//    cp.pop();
-//    cout << "Heap después de eliminar el elemento de mayor prioridad: ";
-//    cp.printHeap();
-//
-//    return 0;
-//}
+// how to compile: g++ -std=c++11 heap.cpp -o heapPenguin
