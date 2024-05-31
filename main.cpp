@@ -2,6 +2,7 @@
 using namespace std;
 #include "Dijkstra.h"
 typedef pair<double, int> ii;
+// <peso, nodo>
 
 ii generarArista(int j, int nodo){
 	// Generamos una arista del grafo aleatoria
@@ -31,21 +32,26 @@ void crearGrafo(vector<vector<ii>>* grafo, int i, int e) {
 	int v = 1 << i;
 	(*grafo).resize(v);
 	//añadir arista random a 0
-	(*grafo)[0].push_back(generarArista(v-1 , 0));
+	ii aristaInicial = generarArista(v, 0);
+    (*grafo)[0].push_back(aristaInicial);
+	(*grafo)[aristaInicial.second].push_back({aristaInicial.first, 0});  // Añadimos la arista inversa
+
     //rellenar los demas
 	for(int k = 1; k < v; k++){
-		//aqui hacer la wea random
-		ii aristaRandom = generarArista(k , k);
-		(*grafo)[k].push_back(aristaRandom);
+		// generar arista random para el nodo 
+		ii aristaRandom = generarArista(v, k);
+        (*grafo)[k].push_back(aristaRandom);
+        (*grafo)[aristaRandom.second].push_back({aristaRandom.first, k});
 	}
 	//aqui rellenar los 2^j - (v)
 	int h = (1 << e) - v;
 	while(h > 0){
 		//elegir el nodo 
 		int indice = generarNodo(v);
+		//generar arista random
 		ii aristaRandom = generarArista(v , indice);
 		(*grafo)[indice].push_back(aristaRandom);
-		//generar una arista random 
+		(*grafo)[aristaRandom.second].push_back({aristaRandom.first, indice});  // Añadimos la arista inversa
 		h--;
 	}
 }
@@ -67,7 +73,7 @@ void printGrafo(vector<vector<ii>> grafo) {
 int main(){
     //aaaaaaaaa
 	vector<vector<ii>> gr;
-	crearGrafo(&gr, 2, 3);
+	crearGrafo(&gr, 2, 2);
 	printGrafo(gr);
 	vector<int> previos; 
 	vector<double> distancias;
