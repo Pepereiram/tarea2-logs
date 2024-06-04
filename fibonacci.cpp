@@ -9,6 +9,7 @@
 #include <list>
 #include <queue>
 #include <unistd.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -55,10 +56,10 @@ public:
         // Verificamos que el min no sea nulo
         if (minNode != NULL) {
             // Insertamos newNode en la lista enlazada root
-            newNode->left = minNode;
-            newNode->right = minNode->right;
-            minNode->right = newNode;
-            newNode->right->left = newNode;
+            newNode->left = minNode;         
+            newNode->right = minNode->right; 
+            minNode->right = newNode;        
+            newNode->right->left = newNode;  
             if (newNode->key < minNode->key) {
                 // Si es menor, lo reemplaza
                 minNode = newNode;
@@ -97,8 +98,8 @@ public:
                 } while (child != oldMin->child);
             }
             //
-            oldMin->left->right = oldMin->right;
-            oldMin->right->left = oldMin->left;
+            oldMin->left->right = oldMin->right; // z<->x<->w  = z -> w
+            oldMin->right->left = oldMin->left;  // z<->x<->w  = z <- w
             // ver si hay que borrar la memoria alocada para oldMin
 
             // Verificamos si el minimo es el unico nodo
@@ -128,7 +129,7 @@ public:
             current = current->right;
         } while (current != minNode);
         // Recorremos la lista enlazada root para cada nodo x perteneciente a esta
-        for (Node* node : rootList) {
+        for (Node* node : rootList) { // 3 2 1
             Node* x = node;
             int d = x->degree;
             // Mientras haya nodos con el mismo grado que x
@@ -153,14 +154,9 @@ public:
         for (Node* node : degreeTable) {
             if (node != nullptr) {
                 if (minNode == nullptr) {
+
                     minNode = node;
                 } else {
-                    node->left->right = node;
-                    node->right->left = node;
-                    node->left = minNode;
-                    node->right = minNode->right;
-                    minNode->right->left = node;
-                    minNode->right = node;
                     if (node->key < minNode->key) {
                         minNode = node;
                     }
@@ -170,12 +166,14 @@ public:
     }
 
     // enlaza ambos nodos
-    void link(Node* y, Node* x) {
-        y->left->right = y->right;
-        y->right->left = y->left;
-        y->left = y;
-        y->right = y;
-        y->parent = x;
+    void link(Node* y, Node* x) { //se cuelga 3 en el 2
+        // Elimina y de la lista enlazada root
+        y->left->right = y->right; //  z<->y<->w  =  z->w 
+        y->right->left = y->left;  //  z<->y<->w  =  z<-w 
+        // Hace y hijo de x
+        y->left = y; //  y<-y
+        y->right = y; // y->y
+        y->parent = x; // 
         if (x->child == NULL) {
             x->child = y; // y se cuelga de x
         } else {
@@ -233,27 +231,6 @@ public:
             }
         }
     }
-
-    void merge(FibonacciHeap* other) {
-        if (minNode == NULL) {
-            minNode = other->minNode;
-            n = other->n;
-            return;
-        }
-        if (other->minNode == NULL) {
-            return;
-        }
-        Node* left = minNode->left;
-        Node* right = other->minNode->right;
-        minNode->left = other->minNode;
-        other->minNode->right = minNode;
-        left->right = right;
-        right->left = left;
-        if (other->minNode->key < minNode->key) {
-            minNode = other->minNode;
-        }
-        n += other->n;
-    }
 };
 
 
@@ -266,14 +243,21 @@ void printFibonacciHeap(FibonacciHeap heap) {
     do {
         rootList.push_back(current);
         current = current->right;
-        cout << "Nodo: " << current->vertice << " con llave: " << current->key << endl; 
-        // hacemos un wait de 0.5 segundos
-        sleep(10);
     } while (current != heap.minNode);
     //iterar por la lista imprimiendo wea
     for (Node* node : rootList) {
         cout << "Nodo: " << node->vertice << " con llave: " << node->key << endl;
     }
+    
+}
+
+
+int generarXD(int j){
+	// Generamos una arista del grafo aleatoria
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dist(0, j-1);
+	return dist(gen);
 }
 
 
@@ -281,21 +265,18 @@ int main(){
     FibonacciHeap* heap = new FibonacciHeap();
     // Insertamos 10 elementos
     for (int i = 0; i < 10; i++) {
-        heap->insert({(double)i, i});
+        // generamos valores enteros aleatorios entre 0 y 100
+        heap->insert({(double)generarXD(100), i});
     }
     // Imprimimos el heap
     cout << "Imprime el heap" << endl;
     printFibonacciHeap(*heap);
 
     // Eliminamos el minimo 5 veces
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 9; i++) {
         cout << "Elimina: " << heap->removeMin() << endl;
-        cout << "Imprime el heap después de eliminar" << endl;
-        printFibonacciHeap(*heap);
     }
 }
 
-
+// how to run: ./fibPenguin
 // how to compile: g++ -std=c++11 fibonacci.cpp -o fibPenguin
-
-// how to delete linux: rm fibPenguin
