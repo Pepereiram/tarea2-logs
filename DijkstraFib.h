@@ -18,6 +18,7 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
                             vector<double>* pdistancia, vector<int>* pPrevios) { //n numero de nodos, s nodo inicial, gr es la lista de adyacencia del grafo que ahora tiene pares (distancia, nodo)
     //PASO 1:
     // Cambiamos el tamaño de distancia y previos
+    cout << "paso 1" << endl;
     (*pdistancia).resize(n);
     (*pPrevios).resize(n);
     // camino final es 0 4 2 1 : [-1, 2, x, 4, x, 0]
@@ -30,6 +31,7 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
 
     //PASO 3
     // Metemos la fuente a la cola y asignamos su distancia
+    cout << "paso 2" << endl;
     (*pdistancia)[s] = 0;
     (*pPrevios)[s] = -1;
     cola.insert({0, s});
@@ -38,6 +40,7 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
     //**** distancia ya esta inicializada con infinito
     //falta inicializar bien previos
     //se mete en la cola los nodos con sus distancias
+    cout << "paso 3" << endl;
     for(int i = 0; i < n; i++){
         if(i != s) {
             (*pdistancia)[i] = INF;
@@ -49,24 +52,32 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
     //heapifear    
     
     //PASO 6:
+    cout << "paso 4" << endl;
     // Mientras la cola no esté vacía, tenemos nodos que revisar
     int previo = -1;
     while(!cola.empty()) {
-
+        cout << "se mira el menor elemento" << endl;
         // Sacamos el nodo que esté a menor distancia ahora mismo  
         auto [nodo_d, nodo] = cola.getMin();
+        cout << "remueve minimo" << endl;
         cola.removeMin();
 
+        cout << "revisar vecinos" << endl;
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
         for(auto [vecino_d, vecino]: gr[nodo]) {
+            cout << "vecino que estamos mirando: " << vecino << endl;
             // Si la distancia guardada para el vecino es menor a la distancia de nodo + el peso
             if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
+                cout << "if: distancia vecino menor a la distancia del nodo + peso" << endl;
                 double distanciaAntigua = (*pdistancia)[vecino];
                 (*pdistancia)[vecino] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
                 (*pPrevios)[vecino] = nodo;
                 //obtener referencia al nodo que almacena (distanciaAntigua, vecino)
+                cout << "se obtiene referencia al nodo del vecino " << endl; 
                 Node* pVecino = cola.refNodo(distanciaAntigua, vecino);
+                cout << "se hace el decrease key de " << pVecino << endl;
                 cola.decreaseKey(pVecino , nodo_d + vecino_d);
+                cout << "paso el decrease key" << endl;
             }
         }
     }

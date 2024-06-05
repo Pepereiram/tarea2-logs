@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#include "Dijkstra.h"
+#include "DijkstraHeap.h"
 #include "DijkstraFib.h"
 typedef pair<double, int> ii;
 // <peso, nodo>
@@ -26,6 +26,8 @@ int generarNodo(int j){
 	return dist(gen);
 }
 
+
+// cambiar funcion de multigrafo a grafo normal
 
 //n es la cantidad de nodos y e de enlaces
 void crearGrafo(vector<vector<ii>>* grafo, int i, int e) {
@@ -86,7 +88,9 @@ int main(){
 
 	// printeamos el nodo
 	cout << "Nodo inicial: " << inicial << endl;
+	cout << "paso heap" << endl;
     caminoMasCorto(inicial, n, gr, cola, &distancias, &previos);
+	cout << "paso fib" << endl; 
     caminoMasCortoFib(inicial, n, gr, fib, &distanciasFib, &previosFib);
 	
 	cout << "---------------- HEAP --------------" << endl;
@@ -102,4 +106,5 @@ int main(){
     }
 	return 0;
 }
-// compile: g++ -std=c++11 main.cpp -o mainPenguin
+
+// compile: g++ -std=c++1S1 main.cpp -o mainPenguin

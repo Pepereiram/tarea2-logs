@@ -76,7 +76,7 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
 }
 
 
-
+/**/
 int main(){
     vector<double> distancias; 
     vector<int> previos;

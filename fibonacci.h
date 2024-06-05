@@ -214,6 +214,7 @@ public:
             return;
         }
         //eliminar par antiguo del mapa
+        
         posMap.erase(pairToString({x->key, x->vertice}));
         
         //se cambia el valor de la llave
