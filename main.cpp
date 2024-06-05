@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #include "Dijkstra.h"
+#include "DijkstraFib.h"
 typedef pair<double, int> ii;
 // <peso, nodo>
 
@@ -71,22 +72,33 @@ void printGrafo(vector<vector<ii>> grafo) {
 
 //main xd aqui se mainea
 int main(){
-    //aaaaaaaaa
 	vector<vector<ii>> gr;
 	crearGrafo(&gr, 2, 2);
 	printGrafo(gr);
 	vector<int> previos; 
 	vector<double> distancias;
+	vector<int> previosFib; 
+	vector<double> distanciasFib;
 	int n = 1 << 2;
 	int inicial = generarNodo(n);
 	ColaPrioridad cola;
+	FibonacciHeap fib;
+
 	// printeamos el nodo
 	cout << "Nodo inicial: " << inicial << endl;
     caminoMasCorto(inicial, n, gr, cola, &distancias, &previos);
+    caminoMasCortoFib(inicial, n, gr, fib, &distanciasFib, &previosFib);
 	
+	cout << "---------------- HEAP --------------" << endl;
 	for(int i = 0; i < n; i++) {
         cout << "Distancia para " << i << " es: " << distancias[i] << endl; 
         cout << "Previos para " << i << " es: " << previos[i] << endl; 
+    }
+
+	cout << "------------- FIBONACCI -------------" << endl;
+	for(int i = 0; i < n; i++) {
+        cout << "Distancia para " << i << " es: " << distanciasFib[i] << endl; 
+        cout << "Previos para " << i << " es: " << previosFib[i] << endl; 
     }
 	return 0;
 }

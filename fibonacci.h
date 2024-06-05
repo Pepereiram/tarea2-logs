@@ -44,11 +44,28 @@ class FibonacciHeap {
 public:
     Node* minNode;
     int n;
+    unordered_map<string , Node*> posMap; // Mapa que recibe 
 
     FibonacciHeap() {
         minNode = NULL;
         n = 0;
+        // Inicializamos el mapa
+        posMap = unordered_map<string, Node*>();
     }
+
+    bool empty(){
+        return n == 0;
+    }
+
+    // Tomamos un par ii y lo concatenamos en un string
+    string pairToString(ii pair) {
+        return to_string(pair.first) + "-" + to_string(pair.second);
+    }
+
+    Node* refNodo(double peso, int nodo){
+        string llave = pairToString({peso,nodo});
+        return posMap[llave];
+    } 
 
     void insert(ii pair) {
         //Se crea nodo nuevo con la llave insertada
@@ -69,6 +86,8 @@ public:
             minNode = newNode;
         }
         n++;
+        // Insertamos el nodo en el mapa
+        posMap[pairToString(pair)] = newNode;
     }
 
     ii getMin() {
@@ -112,6 +131,8 @@ public:
             }
             n--;
         }
+        // Eliminamos el nodo del mapa
+        posMap.erase(pairToString({oldMin->key, oldMin->vertice}));
         return oldMin->key;
     }
 
@@ -186,32 +207,48 @@ public:
         y->childCut = false;
     }
 
-    // aún no lo vemos
+    // vamos chavales yo no lo descargo porque ya lo tengo
     void decreaseKey(Node* x, int key) {
+        //Si la llave es mayor, no se cambia nada
         if (key > x->key) {
             return;
         }
+        //eliminar par antiguo del mapa
+        posMap.erase(pairToString({x->key, x->vertice}));
+        
+        //se cambia el valor de la llave
         x->key = key;
         Node* y = x->parent;
+        //añadir nuevo par al mapa
+        posMap[pairToString({x->key, x->vertice})] = x;
+        
+        //si tiene padre y no se cumple la propiedad del heap
         if (y != NULL && x->key < y->key) {
             cut(x, y);
             cascadingCut(y);
         }
+        //se establece nuevo nodo minimo, si es necesario
         if (x->key < minNode->key) {
             minNode = x;
         }
     }
 
     void cut(Node* x, Node* y) {
-        x->left->right = x->right;
-        x->right->left = x->left;
+        // remueve x de la lista de hijos de y (pasa?)
+        x->left->right = x->right; // z <-> x <-> w  = z -> w
+        x->right->left = x->left;  // z <- w , quedando z <-> w
+        // disminuye el grado del padre
         y->degree--;
+        //si el puntero al hijo de y era x
         if (y->child == x) {
+            //apunta a otro de los nodos de los hijos
             y->child = x->right;
         }
+        //si se quedo sin hijos, apunta a nulo
         if (y->degree == 0) {
             y->child = NULL;
         }
+        //se adhiere x a la rootlist
         x->left = minNode;
         x->right = minNode->right;
         minNode->right = x;
@@ -222,10 +259,14 @@ public:
     
     void cascadingCut(Node* y) {
         Node* z = y->parent;
+        //si no el nodo raiz
         if (z != NULL) {
+            //si nodo no esta marcado
             if (y->childCut == false) {
+                //se marca xd
                 y->childCut = true;
             } else {
+                //si esta marcado, se corta y se sube por el arbol
                 cut(y, z);
                 cascadingCut(z);
             }
@@ -233,7 +274,7 @@ public:
     }
 };
 
-
+/*
 //Funcion para printear el FibonacciHeap
 void printFibonacciHeap(FibonacciHeap heap) {
     list<Node*> rootList;
@@ -277,6 +318,6 @@ int main(){
         cout << "Elimina: " << heap->removeMin() << endl;
     }
 }
-
+*/
 // how to run: ./fibPenguin
 // how to compile: g++ -std=c++11 fibonacci.cpp -o fibPenguin
