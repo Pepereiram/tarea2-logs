@@ -254,6 +254,9 @@ public:
     }
 
     void cut(Node* x, Node* y) {
+        // COMENTARIO PEPE
+        // en vola hay que chequear que x no se apunte a si mismo y luego hacer los cambios de punteros
+
         // remueve x de la lista de hijos de y (pasa?)
         x->left->right = x->right; // z <-> x <-> w  = z -> w
         x->right->left = x->left;  // z <- w , quedando z <-> w
