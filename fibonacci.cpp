@@ -255,22 +255,28 @@ public:
 
     void cut(Node* x, Node* y) {
         // COMENTARIO PEPE
-        // en vola hay que chequear que x no se apunte a si mismo y luego hacer los cambios de punteros
+        // en vola hay que chequear que x no se apunte a si mismo
+        // y luego hacer los cambios de punteros
 
         // remueve x de la lista de hijos de y (pasa?)
         x->left->right = x->right; // z <-> x <-> w  = z -> w
         x->right->left = x->left;  // z <- w , quedando z <-> w
         // disminuye el grado del padre
-        y->degree--;
+        y->degree--;// tambien esto lo hacian despues del siguiente IF
         //si el puntero al hijo de y era x
         if (y->child == x) {
             //apunta a otro de los nodos de los hijos
             y->child = x->right;
         }
+
+        // ESTO NO LO HACIAN (NO SE POR QUE)
         //si se quedo sin hijos, apunta a nulo
         if (y->degree == 0) {
             y->child = NULL;
         }
+
+        // AQUI EN VOLA HABIAN OTRA DIFERENCIAS
+        // Trataré de investigar un poco mas
         //se adhiere x a la rootlist
         x->left = minNode;
         x->right = minNode->right;
