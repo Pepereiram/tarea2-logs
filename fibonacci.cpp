@@ -258,6 +258,26 @@ public:
         // en vola hay que chequear que x no se apunte a si mismo
         // y luego hacer los cambios de punteros
 
+        // if (x->right == x) {
+        //     y->child = nullptr;
+        // } else {
+        //     // remueve x de la lista de hijos de y (pasa?)
+        //     x->left->right = x->right; // z <-> x <-> w  = z -> w
+        //     x->right->left = x->left;  // z <- w , quedando z <-> w
+        //     if (y->child == x) {
+        //         //apunta a otro de los nodos de los hijos
+        //         y->child = x->right;
+        //     }
+        // }
+        // y->degree--;
+
+        // minNode->left->right = x;
+        // x->left = minNode->left;
+        // x->right = minNode;
+        // minNode->left = x;
+        // x->parent = nullptr;
+        // x->childCut = false;
+
         // remueve x de la lista de hijos de y (pasa?)
         x->left->right = x->right; // z <-> x <-> w  = z -> w
         x->right->left = x->left;  // z <- w , quedando z <-> w
