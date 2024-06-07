@@ -56,23 +56,16 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
     while(!cola.empty()) {
   
         // Sacamos el nodo que esté a menor distancia ahora mismo  
-        //auto [nodo_d, nodo] = cola.top();
-        //cola.pop();
-        auto top = cola.top();
-        double nodo_d = top.first;
-        int nodo = top.second;
-
+        auto [nodo_d, nodo] = cola.top();
+        cola.pop();
 
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
-        //for(auto [vecino_d, vecino]: gr[nodo]) {
-        for (auto& vecino : gr[nodo]) {
-            double vecino_d = vecino.first;
-            int vecino_node = vecino.second;
+        for(auto [vecino_d, vecino]: gr[nodo]) {
             // Si la distancia guardada para el vecino es menor a la distancia de nodo + el peso
-            if ((*pdistancia)[vecino_node] > nodo_d + vecino_d) {
-                (*pdistancia)[vecino_node] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
-                (*pPrevios)[vecino_node] = nodo;
-                cola.decreaseKey(vecino_node , nodo_d + vecino_d); 
+            if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
+                (*pdistancia)[vecino] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
+                (*pPrevios)[vecino] = nodo;
+                cola.decreaseKey(vecino , nodo_d + vecino_d); 
             }
         }
         
@@ -83,12 +76,12 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
 }
 
 
-/**/
+/*
 int main(){
     vector<double> distancias; 
     vector<int> previos;
     //asjdnasjnads el tamaño del grafo
-    int n = 5;
+    int n = 6;
     //Creamos un grafo de ejemplo
     vector<vector<ii>> gr(n);
     gr[0].push_back({3, 1});
@@ -100,23 +93,30 @@ int main(){
     gr[1].push_back({11, 3});
     gr[3].push_back({11, 1});
     
-    gr[3].push_back({5, 2});
-    gr[2].push_back({5, 3});
+    gr[3].push_back({9, 2});
+    gr[2].push_back({9, 3});
     
     gr[4].push_back({5, 3});
     gr[3].push_back({5, 4});
     
+    gr[0].push_back({8, 2});
+    gr[2].push_back({8, 0});
+
+    gr[1].push_back({6, 5});
+    gr[5].push_back({6, 1});
+
     //hacer cola de prioridad
     ColaPrioridad cola;
     //probar la weaita jajaja
     caminoMasCorto(2, n, gr, cola, &distancias, &previos);
 
     for(int i = 0; i < n; i++) {
-        cout << "Distancia para " << i << " es: " << distancias[i] << endl; 
+        cout << "Distancia para " << i << " es: " << distancias[i] << endl;
         cout << "Previos para " << i << " es: " << previos[i] << endl; 
     }
 
     return 0;
 }
+*/
 
 // how to compile: g++ -std=c++11 Dijkstra.cpp -o djPenguin
