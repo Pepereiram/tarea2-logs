@@ -57,6 +57,7 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
   
         // Sacamos el nodo que esté a menor distancia ahora mismo  
         auto [nodo_d, nodo] = cola.top();
+        cout << "minimo extraido es " << nodo << endl;
         cola.pop();
 
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
