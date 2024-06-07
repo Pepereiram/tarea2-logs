@@ -56,16 +56,23 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
     while(!cola.empty()) {
   
         // Sacamos el nodo que esté a menor distancia ahora mismo  
-        auto [nodo_d, nodo] = cola.top();
-        cola.pop();
+        //auto [nodo_d, nodo] = cola.top();
+        //cola.pop();
+        auto top = cola.top();
+        double nodo_d = top.first;
+        int nodo = top.second;
+
 
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
-        for(auto [vecino_d, vecino]: gr[nodo]) {
+        //for(auto [vecino_d, vecino]: gr[nodo]) {
+        for (auto& vecino : gr[nodo]) {
+            double vecino_d = vecino.first;
+            int vecino_node = vecino.second;
             // Si la distancia guardada para el vecino es menor a la distancia de nodo + el peso
-            if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
-                (*pdistancia)[vecino] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
-                (*pPrevios)[vecino] = nodo;
-                cola.decreaseKey(vecino , nodo_d + vecino_d); 
+            if ((*pdistancia)[vecino_node] > nodo_d + vecino_d) {
+                (*pdistancia)[vecino_node] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
+                (*pPrevios)[vecino_node] = nodo;
+                cola.decreaseKey(vecino_node , nodo_d + vecino_d); 
             }
         }
         
