@@ -16,14 +16,6 @@ struct ColaPrioridad {
         heap.push_back(p);
         int index = heap.size() - 1;
         posMap[p.second] = index;
-
-        //while(heap[parent(index)] > heap[index] && index != 0){
-        //    // haremos el push_heap a mano  
-        //    swap(heap[parent(index)], heap[index]);
-        //    posMap[heap[parent(index)].second] = parent(index);
-        //    posMap[heap[index].second] = index;
-        //    index = parent(index);
-        //}
     }
 
     // Devuelve el elemento con mayor prioridad (el mínimo en este caso)
@@ -111,44 +103,3 @@ private:
         return 2 * i + 2;
     }
 };
-
-
-/*
-int main() {
-    ColaPrioridad cp;
-
-    // Insertar elementos en el heap
-    cp.push({3, 100});
-    cp.push({6, 600});
-    cp.push({1, 200});
-    cp.push({0, 150});
-    cp.push({2, 300});
-    cp.push({4, 400});
-    cp.push({5, 500});
-
-    cout << "Heap actual: ";
-    cp.printHeap();
-
-    // Mostrar el elemento de mayor prioridad (mínimo)
-    cout << "Elemento de mayor prioridad: (" << cp.top().first << ", " << cp.top().second << ")" << endl;
-
-    // Eliminar el elemento de mayor prioridad (mínimo)
-    cp.pop();
-    cout << "Heap después de eliminar el elemento de mayor prioridad: ";
-    cp.printHeap();
-
-    // Eliminar el elemento de mayor prioridad (mínimo)
-    cp.pop();
-    cout << "Heap después de eliminar el elemento de mayor prioridad: ";
-    cp.printHeap();
-
-    // Disminuir la clave de un nodo
-    cp.decreaseKey(300, 0);
-    cout << "Heap después de disminuir la clave del nodo 300: ";
-    cp.printHeap();
-
-    return 0;
-} */
-
-
-// how to compile: g++ -std=c++11 heap.cpp -o heapPenguin
