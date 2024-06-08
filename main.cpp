@@ -1,4 +1,8 @@
 #include <bits/stdc++.h>
+#include <chrono>
+#include <ctime>
+#include <iostream>
+#include <fstream>
 using namespace std;
 #include "DijkstraHeap.h"
 #include "DijkstraFib.h"
@@ -74,6 +78,18 @@ void printGrafo(vector<vector<ii>> grafo) {
 
 //main xd aqui se mainea
 int main(){
+
+	// archivo para guardar resultados
+	ofstream archivo;
+    archivo.open("resultados.txt", fstream::out);
+    archivo << "Resultados de la ejecución" << endl;
+    archivo << endl;
+    archivo.close();
+
+	//vector<double> averageTime_per_u_heap(U);
+    //vector<double> averageTime_per_u_fib(U);
+
+	// tests
 	vector<vector<ii>> gr;
 	crearGrafo(&gr, 2, 2);
 	printGrafo(gr);
