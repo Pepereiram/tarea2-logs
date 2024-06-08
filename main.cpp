@@ -9,6 +9,9 @@ using namespace std;
 typedef pair<double, int> ii;
 // <peso, nodo>
 
+// Número de consultas
+#define L 50
+
 // ii generarArista(int j, int nodo , vector<vector<ii>> grafo){
 // 	// Generamos una arista del grafo aleatoria
 // 	random_device rd;
@@ -171,11 +174,9 @@ void crearGrafo(vector<vector<ii>>& grafo, int i, int e) {
         grafo[aristaRandom.second].push_back({aristaRandom.first, k});
     }
 
-	//cout << "iwi" << endl;
     // Aquí rellenar los 2^e - v
     int h = (1 << e) - v;
     while (h > 0) {
-		//cout << "owo" << endl;
         // Elegir el nodo
         int indice = generarNodo(v);
 		//nos aseguramos de que un nodo no este lleno
@@ -192,7 +193,7 @@ void crearGrafo(vector<vector<ii>>& grafo, int i, int e) {
 }
 
 
-//main xd aqui se mainea
+
 int main(){
 
 	// archivo para guardar resultados
@@ -202,46 +203,106 @@ int main(){
     archivo << endl;
     archivo.close();
 
-	//vector<double> averageTime_per_u_heap(U);
-    //vector<double> averageTime_per_u_fib(U);
+	vector<double> averageTime_per_L_heap(L);
+    vector<double> averageTime_per_L_fib(L);
 
-	// tests
-	vector<vector<ii>> gr;
-	
-	crearGrafo(gr, 2, 2);
-	printGrafo(gr);
-	//cout << "termino xd" << endl;
+	// ------------------- tests -------------------
+	// grafo con v = 2i nodos, i ∈ {10, 12, 14}
+	for(int i = 10; i < 15; i+=2) {
 
-	//printGrafo(gr);
-	vector<int> previos; 
-	vector<double> distancias;
-	vector<int> previosFib; 
-	vector<double> distanciasFib;
-	int n = 1 << 2;
-	int inicial = generarNodo(n);
-	ColaPrioridad cola;
-	FibonacciHeap fib;
+		int v = pow(2, i);
 
-	// printeamos el nodo
-	cout << "Nodo inicial: " << inicial << endl;
-	cout << "paso heap" << endl;
-    caminoMasCorto(inicial, n, gr, cola, &distancias, &previos);
-	cout << "paso fib" << endl; 
-    caminoMasCortoFib(inicial, n, gr, fib, &distanciasFib, &previosFib);
-	
-	cout << "---------------- HEAP --------------" << endl;
-	for(int i = 0; i < n; i++) {
-        cout << "Distancia para " << i << " es: " << distancias[i] << endl; 
-        cout << "Previos para " << i << " es: " << previos[i] << endl; 
-    }
+		// e = 2j aristas con pesos aleatorios y uniformes dentro del rango (0..1], j ∈ [16...22]
+		for(int j = 16; i < 23; i++) {
 
-	cout << "------------- FIBONACCI -------------" << endl;
-	for(int i = 0; i < n; i++) {
-        cout << "Distancia para " << i << " es: " << distanciasFib[i] << endl; 
-        cout << "Previos para " << i << " es: " << previosFib[i] << endl; 
-    }
-	
+			int e = pow(2, j);
+
+			// crea grafo
+			vector<vector<ii>> gr;
+			crearGrafo(gr, v, e);
+			// printGrafo(gr);
+
+			vector<int> previos; 
+			vector<double> distancias;
+			vector<int> previosFib; 
+			vector<double> distanciasFib;
+
+			int n = 1 << 2; // ??? no sé a qué cambiarlo
+			int inicial = generarNodo(n);
+			ColaPrioridad heap;
+			FibonacciHeap fib;
+
+			// printeamos el nodo
+			//cout << "Nodo inicial: " << inicial << endl;
+
+			int f = 0;
+			while(f < L) {
+
+				cout << "------------------------- HEAP -------------------------" << endl;
+				cout << "Distancias usando Cola de Prioridad (Heap) para i = " << i << " y j = " << j << endl;
+
+				auto begin_h = high_resolution_clock::now();
+				caminoMasCorto(inicial, n, gr, heap, &distancias, &previos);
+				auto end_h = high_resolution_clock::now();
+
+				// Calcula el tiempo transcurrido y lo almacena en el vector
+				double time = duration_cast<nanoseconds>(end_h - begin_h).count() / 1e9;
+				times_heap[f] = time;
+				cout << "Tiempo Heap: " << time << endl;
+            	cout << endl;
+					
+				for(int k = 0; k < gr.size(); ++k) {
+					//cout << "Distancia para " << i << " es: " << distancias[i] << endl; 
+					//cout << "Previos para " << i << " es: " << previos[i] << endl;
+
+					cout << "Nodo " << k << ": " << distancia[k] << endl; 
+				}
+
+
+				cout << "----------------------- FIBONACCI -----------------------" << endl;
+				cout << "Distancias usando Cola de Prioridad (Fibonacci Heap) para i = " << i << " y j = " << j << endl;
+					
+				auto begin_f = high_resolution_clock::now();
+				caminoMasCortoFib(inicial, n, gr, fib, &distanciasFib, &previosFib);
+				auto end_f = high_resolution_clock::now();
+
+				// Calcula el tiempo transcurrido y lo almacena en el vector
+				double time = duration_cast<nanoseconds>(end_f - begin_f).count() / 1e9;
+				times_fib[f] = time;
+				cout << "Tiempo Fibonacci: " << time << endl;
+            	cout << endl;
+					
+				for(int k = 0; k < gr.size(); ++k) {
+					//cout << "Distancia para " << i << " es: " << distanciasFib[i] << endl; 
+					//cout << "Previos para " << i << " es: " << previosFib[i] << endl; 
+
+					cout << "Nodo " << k << ": " << distancia[k] << endl; 
+				}
+
+				f++;
+
+			}
+
+			// Calcula tiempo promedio Heap y Fibonacci
+			double averageTime_heap = accumulate(times_heap.begin(), times_heap.end(), 0.0) / L;
+        	double averageTime_fib = accumulate(times_fib.begin(), times_fib.end(), 0.0) / L;
+
+			// Guarda los resultados en un archivo
+			archivo.open("resultados.txt", fstream::app);
+
+			archivo << "v: 2^" << i << " = " << v << endl;
+			archivo << "e: 2^" << j << " = " << e << endl;
+			archivo << "Tiempo promedio cola de prioridad Heap: " << averageTime_heap << endl;
+			archivo << "Tiempo promedio cola de Fibonacci: " << averageTime_fib << endl;
+			archivo << endl;
+
+			archivo.close();
+		}
+
+	}
+
 	return 0;
+
 }
 
 // compile: g++ -std=c++11 main.cpp -o mainPenguin
