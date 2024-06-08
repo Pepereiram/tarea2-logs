@@ -57,13 +57,11 @@ public:
         return n == 0;
     }
 
-    // Tomamos un par ii y lo concatenamos en un string
-    // string pairToString(ii pair) {
-    //     return to_string(pair.first) + "-" + to_string(pair.second);
-    // }
 
     Node* refNodo(int nodo){
-        //string llave = pairToString({peso,nodo});
+        if (posMap.find(nodo) == posMap.end()) {
+            throw runtime_error("Node not found in the heap");
+        }
         return posMap[nodo];
     } 
 
@@ -128,6 +126,7 @@ public:
                 // Si no es el unico nodo, se reemplaza el minimo
                 minNode = oldMin->right;
                 consolidate();
+                
             }
             n--;
         }
@@ -138,10 +137,10 @@ public:
 
     // "heapify"
     void consolidate() {
-        // Es claro que: log(n) / log(2) = log2(n) *por corolario 19.5
-        int maxDegree = log(n) / log(2);
+        // se fija un grado maximo 
+        int maxDegree = n;//log(n) 
         // Creamos el vector de nodos con los grados posibles para el heap
-        vector<Node*> degreeTable(maxDegree + 1, nullptr);
+        vector<Node*> degreeTable(maxDegree + 1 , nullptr); 
         list<Node*> rootList;
         Node* current = minNode;
         // Meter toda la lista enlazada root en una lista de c++
@@ -154,38 +153,25 @@ public:
             Node* x = node;
             int d = x->degree;
             // Mientras haya nodos con el mismo grado que x
-            while (degreeTable[d] != nullptr) {
+            while (degreeTable[d] != nullptr ) {
                 Node* y = degreeTable[d];
+                
                 if (x->key > y->key) {
                     // Si x tiene mayor valor los intercambiamos
                     Node* temp = x;
                     x = y;
                     y = temp;
                 }
-                // Enlazamos y con x (Se vuelve el hijo de x o el hermano de los hijos de x)
 
+                // Enlazamos y con x (Se vuelve el hijo de x o el hermano de los hijos de x)
                 link(y, x); 
                 degreeTable[d] = nullptr;
                 d++;
             }
             degreeTable[d] = x;
         }
-        //se busca el minimo nuevo ( con k elementos en root, k < n -> O(n) )
-        // minNode = nullptr;
-        // for (Node* node : degreeTable) {
-        //     if (node != nullptr) {
-        //         if (minNode == nullptr) {
-
-        //             minNode = node;
-        //         } else {
-        //             if (node->key < minNode->key) {
-        //                 minNode = node;
-        //             }
-        //         }
-        //     }
-        // }
-
-        // GPT
+    
+        //se busca el minimo nuevo en la rootlist
         minNode = nullptr;
         for (Node* node : degreeTable) {
             if (node != nullptr) {
@@ -195,7 +181,6 @@ public:
                     // Asegurar que los nodos se añaden correctamente a la lista de raíces
                     node->left->right = node->right;
                     node->right->left = node->left;
-                    
                     node->left = minNode;
                     node->right = minNode->right;
                     minNode->right->left = node;
@@ -206,6 +191,7 @@ public:
                     }
                 }
             }
+
         }
     }
 
@@ -231,7 +217,7 @@ public:
     }
 
     // Que es el relator? el relator es un programa que se encarga de hacer la reducción de la fibbonacci heap
-    void decreaseKey(Node* x, int key) {
+    void decreaseKey(Node* x, double key) {
         //Si la llave es mayor, no se cambia nada
         if (key > x->key) {
             return;
@@ -247,37 +233,12 @@ public:
             }    
         }
         //se establece nuevo nodo minimo, si es necesario
-        
         if (x->key < minNode->key) {
             minNode = x;
         }
     }
 
     void cut(Node* x, Node* y) {
-        // COMENTARIO PEPE
-        // en vola hay que chequear que x no se apunte a si mismo
-        // y luego hacer los cambios de punteros
-
-        // if (x->right == x) {
-        //     y->child = nullptr;
-        // } else {
-        //     // remueve x de la lista de hijos de y (pasa?)
-        //     x->left->right = x->right; // z <-> x <-> w  = z -> w
-        //     x->right->left = x->left;  // z <- w , quedando z <-> w
-        //     if (y->child == x) {
-        //         //apunta a otro de los nodos de los hijos
-        //         y->child = x->right;
-        //     }
-        // }
-        // y->degree--;
-
-        // minNode->left->right = x;
-        // x->left = minNode->left;
-        // x->right = minNode;
-        // minNode->left = x;
-        // x->parent = nullptr;
-        // x->childCut = false;
-
         // remueve x de la lista de hijos de y (pasa?)
         x->left->right = x->right; // z <-> x <-> w  = z -> w
         x->right->left = x->left;  // z <- w , quedando z <-> w
@@ -289,13 +250,11 @@ public:
             y->child = x->right;
         }
 
-        // ESTO NO LO HACIAN (NO SE POR QUE)
         //si se quedo sin hijos, apunta a nulo
         if (y->degree == 0) {
             y->child = NULL;
         }
 
-        // AQUI EN VOLA HABIAN OTRA DIFERENCIAS
         // Trataré de investigar un poco mas
         //se adhiere x a la rootlist
         x->left = minNode;
@@ -340,40 +299,3 @@ void printFibonacciHeap(FibonacciHeap heap) {
     }
     
 }
-
-
-int generarXD(int j){
-	// Generamos una arista del grafo aleatoria
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dist(0, j-1);
-	return dist(gen);
-}
-
-
-int main(){
-    FibonacciHeap* heap = new FibonacciHeap();
-    // Insertamos 10 elementos
-    for (int i = 0; i < 10; i++) {
-        // generamos valores enteros aleatorios entre 0 y 100
-        heap->insert({(double)generarXD(100), i});
-    }
-    // Imprimimos el heap
-    cout << "Imprime el heap" << endl;
-    printFibonacciHeap(*heap);
-    // Eliminamos el minimo 5 veces
-    for (int i = 0; i < 10; i++) {
-        cout << "Elimina: " << heap->removeMin() << endl;
-        if(i == 0){
-            //decrease key 
-            cout << "se cambia peso de nodo 2 por 99" << endl;
-            Node* nodo2 = heap->refNodo(2);
-            heap->decreaseKey(nodo2,99);
-            printFibonacciHeap(*heap);
-            //heap->decreaseKey(heap->minNode, 15);
-        }
-    }
-}
-
-// how to run: ./fibPenguin
-// how to compile: g++ -std=c++11 fibonacci.cpp -o fibPenguin

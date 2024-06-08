@@ -278,7 +278,6 @@ int main(){
 				for(int k = 0; k < gr.size(); ++k) {
 					//cout << "Distancia para " << i << " es: " << distanciasFib[i] << endl; 
 					//cout << "Previos para " << i << " es: " << previosFib[i] << endl; 
-
 					cout << "Nodo " << k << ": " << distancia[k] << endl; 
 				}
 
