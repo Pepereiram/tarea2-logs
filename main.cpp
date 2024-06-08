@@ -212,8 +212,11 @@ int main(){
 
 		int v = pow(2, i);
 
+		// Calcular el máximo valor de j permitido para el número de nodos 2^i
+        int max_j = min(22, static_cast<int>(log2((1 << i) * (1 << i - 1) / 2)));
+
 		// e = 2j aristas con pesos aleatorios y uniformes dentro del rango (0..1], j ∈ [16...22]
-		for(int j = 16; i < 23; i++) {
+		for(int j = 16; j <= max_j; j++) {
 
 			int e = pow(2, j);
 
