@@ -133,7 +133,8 @@ int main(){
 
 	// ------------------- tests -------------------
 	// grafo con v = 2i nodos, i ∈ {10, 12, 14}
-	for(int i = 10; i < 11; i+=2) { // i < 11
+	for(int i = 10; i < 11; i+=2) { //<= 14 
+
 		int v = pow(2, i);
 
 		vector<double> times_heap(L);
@@ -151,7 +152,8 @@ int main(){
 
 			// crea grafo
 			vector<vector<ii>> gr;
-			crearGrafo(gr, v, e);
+			crearGrafo(gr, i, j);
+			cout << "Se creo el grafo " << endl;
 			// printGrafo(gr);
 
 			vector<int> previos; 

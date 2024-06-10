@@ -43,9 +43,6 @@ struct ColaPrioridad {
 
     // Función para disminuir la clave (distancia) de un nodo específico
     void decreaseKey(int node, double newDist) {
-        if (posMap.find(node) == posMap.end()) {
-            throw runtime_error("Node not found in the heap");
-        }
         int index = posMap[node];
         heap[index].first = newDist;
         // Adjust the heap after decrease

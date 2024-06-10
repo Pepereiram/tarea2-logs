@@ -138,7 +138,7 @@ public:
     // "heapify"
     void consolidate() {
         // se fija un grado maximo 
-        int maxDegree = n;//log(n) 
+        int maxDegree = 10 * log(n); 
         // Creamos el vector de nodos con los grados posibles para el heap
         vector<Node*> degreeTable(maxDegree + 1 , nullptr); 
         list<Node*> rootList;
@@ -149,7 +149,7 @@ public:
             current = current->right;
         } while (current != minNode);
         // Recorremos la lista enlazada root para cada nodo x perteneciente a esta
-        for (Node* node : rootList) { // 3 2 1
+        for (Node* node : rootList) {
             Node* x = node;
             int d = x->degree;
             // Mientras haya nodos con el mismo grado que x

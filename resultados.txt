@@ -1,2 +1,17 @@
 Resultados de la ejecución
 
+v: 2^10 = 1024
+e: 2^16 = 65536
+Tiempo promedio cola de prioridad Heap: 0.0290347
+Tiempo promedio cola de Fibonacci: 0.0312811
+
+v: 2^10 = 1024
+e: 2^17 = 131072
+Tiempo promedio cola de prioridad Heap: 0.0427173
+Tiempo promedio cola de Fibonacci: 0.0445924
+
+v: 2^10 = 1024
+e: 2^18 = 262144
+Tiempo promedio cola de prioridad Heap: 0.0681791
+Tiempo promedio cola de Fibonacci: 0.0684825
+
