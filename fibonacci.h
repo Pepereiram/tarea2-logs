@@ -138,7 +138,8 @@ public:
     // "heapify"
     void consolidate() {
         // se fija un grado maximo 
-        int maxDegree = 10 * log(n); 
+        int maxDegree = ceil(log2(n)); // log (n)/log(2) = log2(n)
+        /////int maxDegree = 10 * log(n); // tener ojo xd  
         // Creamos el vector de nodos con los grados posibles para el heap
         vector<Node*> degreeTable(maxDegree + 1 , nullptr); 
         list<Node*> rootList;

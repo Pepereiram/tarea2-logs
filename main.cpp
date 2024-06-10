@@ -133,7 +133,7 @@ int main(){
 
 	// ------------------- tests -------------------
 	// grafo con v = 2i nodos, i ∈ {10, 12, 14}
-	for(int i = 10; i < 11; i+=2) { //<= 14 
+	for(int i = 10; i <= 14; i+=2) {
 
 		int v = pow(2, i);
 
