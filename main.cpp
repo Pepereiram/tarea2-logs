@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+using namespace chrono;
 #include "DijkstraHeap.h"
 #include "DijkstraFib.h"
 typedef pair<double, int> ii;
@@ -11,81 +12,6 @@ typedef pair<double, int> ii;
 
 // Número de consultas
 #define L 50
-
-// ii generarArista(int j, int nodo , vector<vector<ii>> grafo){
-// 	// Generamos una arista del grafo aleatoria
-// 	random_device rd;
-// 	mt19937 gen(rd());
-// 	uniform_real_distribution<double> peso(0,1);
-// 	uniform_int_distribution<int> dist(0, j-1);
-// 	int res = dist(gen);
-// 	while (res == nodo) {
-//         res = dist(gen);
-//     }
-// 	// Interamos en el grafo[nodo] para ver si ya existe la arista
-// 	for(int i = 0; i < grafo[nodo].size(); i++) {
-// 		if((grafo[nodo][i]).second == res || res == nodo) {
-// 			res = dist(gen);
-// 			i = 0;
-// 		}
-// 	}
-// 	return {peso(gen), res};
-// }
-
-// int generarNodo(int j){
-// 	// Generamos una arista del grafo aleatoria
-// 	random_device rd;
-// 	mt19937 gen(rd());
-// 	uniform_int_distribution<int> dist(0, j-1);
-// 	return dist(gen);
-// }
-
-
-// // cambiar funcion de multigrafo a grafo normal
-
-// //n es la cantidad de nodos y e de enlaces
-// void crearGrafo(vector<vector<ii>>* grafo, int i, int e) {
-// 	//se le asigna tamaño 
-// 	int v = 1 << i;
-// 	(*grafo).resize(v);
-// 	//añadir arista random a 0
-// 	ii aristaInicial = generarArista(v, 0, *grafo);
-//     (*grafo)[0].push_back(aristaInicial);
-// 	(*grafo)[aristaInicial.second].push_back({aristaInicial.first, 0});  // Añadimos la arista inversa
-
-//     //rellenar los demas
-// 	for(int k = 1; k < v; k++){
-// 		// generar arista random para el nodo 
-// 		ii aristaRandom = generarArista(v, k, *grafo);
-//         (*grafo)[k].push_back(aristaRandom);
-//         (*grafo)[aristaRandom.second].push_back({aristaRandom.first, k});
-// 	}
-// 	//aqui rellenar los 2^j - (v)
-// 	int h = (1 << e) - v;
-// 	while(h > 0){
-// 		//elegir el nodo 
-// 		int indice = generarNodo(v);
-// 		//generar arista random
-// 		ii aristaRandom = generarArista(v, indice, *grafo);
-// 		(*grafo)[indice].push_back(aristaRandom);
-// 		(*grafo)[aristaRandom.second].push_back({aristaRandom.first, indice});  // Añadimos la arista inversa
-// 		h--;
-// 	}
-// }
-
-
-// // Funcion para printear el grafo, como lista de adyacencia
-// void printGrafo(vector<vector<ii>> grafo) {
-// 	for (int i = 0; i < grafo.size(); ++i) {
-// 		cout << i << ": ";
-// 		for (int j = 0; j < grafo[i].size(); ++j) {
-// 			cout << "(" << grafo[i][j].first << "," << grafo[i][j].second << ")";
-// 		}
-// 		cout << endl;
-// 	}
-// }
-
-//   --------------------   CHATGPT ---------------------
 
 // Define un hash para pares de enteros
 struct pair_hash {
@@ -108,8 +34,6 @@ void printGrafo(vector<vector<ii>> grafo) {
 }
 
 ii generarArista(int j, int nodo, vector<vector<ii>>& grafo, unordered_set<pair<int, int>, pair_hash>& aristas) {
-	// Printeamos el grafo
-	//printGrafo(grafo);
     // Generamos una arista del grafo aleatoria
     random_device rd;
     mt19937 gen(rd());
@@ -195,9 +119,10 @@ void crearGrafo(vector<vector<ii>>& grafo, int i, int e) {
 
 
 int main(){
-
+	cout << "------------------------- INICIO -------------------------" << endl;
 	// archivo para guardar resultados
 	ofstream archivo;
+	cout << "Creando archivo de resultados" << endl;
     archivo.open("resultados.txt", fstream::out);
     archivo << "Resultados de la ejecución" << endl;
     archivo << endl;
@@ -208,15 +133,19 @@ int main(){
 
 	// ------------------- tests -------------------
 	// grafo con v = 2i nodos, i ∈ {10, 12, 14}
-	for(int i = 10; i < 15; i+=2) {
-
+	for(int i = 10; i < 11; i+=2) { // i < 11
 		int v = pow(2, i);
+
+		vector<double> times_heap(L);
+        vector<double> times_fib(L);
 
 		// Calcular el máximo valor de j permitido para el número de nodos 2^i
         int max_j = min(22, static_cast<int>(log2((1 << i) * (1 << i - 1) / 2)));
 
 		// e = 2j aristas con pesos aleatorios y uniformes dentro del rango (0..1], j ∈ [16...22]
 		for(int j = 16; j <= max_j; j++) {
+			cout << "Creando grafo con v = 2^" << i << " nodos" << endl;
+			cout << "Creando grafo con e = 2^" << j << " aristas" << endl;
 
 			int e = pow(2, j);
 
@@ -230,13 +159,8 @@ int main(){
 			vector<int> previosFib; 
 			vector<double> distanciasFib;
 
-			int n = 1 << 2; // ??? no sé a qué cambiarlo
-			int inicial = generarNodo(n);
 			ColaPrioridad heap;
 			FibonacciHeap fib;
-
-			// printeamos el nodo
-			//cout << "Nodo inicial: " << inicial << endl;
 
 			int f = 0;
 			while(f < L) {
@@ -245,20 +169,18 @@ int main(){
 				cout << "Distancias usando Cola de Prioridad (Heap) para i = " << i << " y j = " << j << endl;
 
 				auto begin_h = high_resolution_clock::now();
-				caminoMasCorto(inicial, n, gr, heap, &distancias, &previos);
+				caminoMasCorto(0, v, gr, heap, &distancias, &previos);
 				auto end_h = high_resolution_clock::now();
 
 				// Calcula el tiempo transcurrido y lo almacena en el vector
-				double time = duration_cast<nanoseconds>(end_h - begin_h).count() / 1e9;
-				times_heap[f] = time;
-				cout << "Tiempo Heap: " << time << endl;
+				double time_h = duration_cast<nanoseconds>(end_h - begin_h).count() / 1e9;
+				times_heap[f] = time_h;
+				cout << "Tiempo Heap: " << time_h << endl;
             	cout << endl;
 					
 				for(int k = 0; k < gr.size(); ++k) {
-					//cout << "Distancia para " << i << " es: " << distancias[i] << endl; 
-					//cout << "Previos para " << i << " es: " << previos[i] << endl;
-
-					cout << "Nodo " << k << ": " << distancia[k] << endl; 
+					cout << "Distancia Nodo " << k << ": " << distancias[k] << endl; 
+					cout << "Previos Nodo " << k << ": " << previos[k] << endl; 
 				}
 
 
@@ -266,19 +188,18 @@ int main(){
 				cout << "Distancias usando Cola de Prioridad (Fibonacci Heap) para i = " << i << " y j = " << j << endl;
 					
 				auto begin_f = high_resolution_clock::now();
-				caminoMasCortoFib(inicial, n, gr, fib, &distanciasFib, &previosFib);
+				caminoMasCortoFib(0, v, gr, fib, &distanciasFib, &previosFib);
 				auto end_f = high_resolution_clock::now();
 
 				// Calcula el tiempo transcurrido y lo almacena en el vector
-				double time = duration_cast<nanoseconds>(end_f - begin_f).count() / 1e9;
-				times_fib[f] = time;
-				cout << "Tiempo Fibonacci: " << time << endl;
+				double time_f = duration_cast<nanoseconds>(end_f - begin_f).count() / 1e9;
+				times_fib[f] = time_f;
+				cout << "Tiempo Fibonacci: " << time_f << endl;
             	cout << endl;
 					
 				for(int k = 0; k < gr.size(); ++k) {
-					//cout << "Distancia para " << i << " es: " << distanciasFib[i] << endl; 
-					//cout << "Previos para " << i << " es: " << previosFib[i] << endl; 
-					cout << "Nodo " << k << ": " << distancia[k] << endl; 
+					cout << "Distancia Nodo " << k << ": " << distanciasFib[k] << endl; 
+					cout << "Previos Nodo " << k << ": " << previosFib[k] << endl; 
 				}
 
 				f++;
