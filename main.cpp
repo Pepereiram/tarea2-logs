@@ -231,3 +231,4 @@ int main(){
 }
 
 // compile: g++ -std=c++11 main.cpp -o mainPenguin
+// run el exe: ./mainPenguin

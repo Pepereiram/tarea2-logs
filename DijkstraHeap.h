@@ -9,14 +9,14 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
                             vector<double>* pdistancia, vector<int>* pPrevios) {
     //PASO 1:
     // Cambiamos el tamaño de distancia y previos
-    (*pdistancia).resize(n);
-    (*pPrevios).resize(n);
+    pdistancia->resize(n);
+    pPrevios->resize(n);
 
     //PASO 3
     // Metemos la fuente a la cola y asignamos su distancia
     (*pdistancia)[s] = 0;
     (*pPrevios)[s] = -1;
-    cola.push({0, s});
+    cola.push(make_pair(0, s));
     
     //PASO 4: 
     //se mete en la cola los nodos con sus distancias
@@ -24,7 +24,7 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
         if(i != s) {
             (*pdistancia)[i] = INF;
             (*pPrevios)[i] = -2;
-            cola.push({INF,i}); // (distancia, nodo)
+            cola.push(make_pair(INF, i)); // (distancia, nodo)
         }
     }
     //PASO 5:
@@ -38,19 +38,23 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
     while(!cola.empty()) {
   
         // Sacamos el nodo que esté a menor distancia ahora mismo  
-        auto [nodo_d, nodo] = cola.top();
+        ii topElem = cola.top();
         cola.pop();
+        double nodo_d = topElem.first;
+        int nodo = topElem.second;
 
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
-        for(auto [vecino_d, vecino]: gr[nodo]) {
+        for(const ii& vecinoPair : gr[nodo]) {
+            double vecino_d = vecinoPair.first;
+            int vecino = vecinoPair.second;
+
             // Si la distancia guardada para el vecino es menor a la distancia de nodo + el peso
             if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
-                (*pdistancia)[vecino] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
+                (*pdistancia)[vecino] = nodo_d + vecino_d; // se actualiza el valor de la distancia en el arreglo
                 (*pPrevios)[vecino] = nodo;
-                cola.decreaseKey(vecino , nodo_d + vecino_d); 
+                cola.decreaseKey(vecino, nodo_d + vecino_d); 
             }
         }
-        
     }
     //PASO 7: 
     // Se retorna distancia y previos(ya se modificaron utilizando punteros)

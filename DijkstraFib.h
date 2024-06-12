@@ -9,14 +9,14 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
                             vector<double>* pdistancia, vector<int>* pPrevios) { 
     //PASO 1:
     // Cambiamos el tamaño de distancia y previos
-    (*pdistancia).resize(n);
-    (*pPrevios).resize(n);
+    pdistancia->resize(n);
+    pPrevios->resize(n);
     
     //PASO 3
     // Metemos la fuente a la cola y asignamos su distancia
     (*pdistancia)[s] = 0;
     (*pPrevios)[s] = -1;
-    cola.insert({0, s});
+    cola.insert(make_pair(0, s));
     
     //PASO 4: 
     //se mete en la cola los nodos con sus distancias
@@ -24,7 +24,7 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
         if(i != s) {
             (*pdistancia)[i] = INF; // (infinito, nodo)
             (*pPrevios)[i] = -2;
-            cola.insert({INF,i}); // (distancia, nodo)
+            cola.insert(make_pair(INF, i)); // (distancia, nodo)
         }
     }
        
@@ -34,11 +34,15 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
     while(!cola.empty()) {
  
         // Sacamos el nodo que esté a menor distancia ahora mismo  
-        auto [nodo_d, nodo] = cola.getMin();
+        ii topElem = cola.getMin();
         cola.removeMin();
+        double nodo_d = topElem.first;
+        int nodo = topElem.second;
         
         // Revisamos sus vecinos: vecino_d es el peso entre nodo y vecino
-        for(auto [vecino_d, vecino]: gr[nodo]) {
+        for(const ii& vecinoPair : gr[nodo]) {
+            double vecino_d = vecinoPair.first;
+            int vecino = vecinoPair.second;
            
             // Si la distancia guardada para el vecino es menor a la distancia de nodo + el peso
             if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
