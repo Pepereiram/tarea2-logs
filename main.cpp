@@ -33,10 +33,7 @@ void printGrafo(vector<vector<ii>> grafo) {
 	}
 }
 
-ii generarArista(int j, int nodo, vector<vector<ii>>& grafo, unordered_set<pair<int, int>, pair_hash>& aristas) {
-    // Generamos una arista del grafo aleatoria
-    random_device rd;
-    mt19937 gen(rd());
+ii generarArista(int j, int nodo, vector<vector<ii>>& grafo, unordered_set<pair<int, int>, pair_hash>& aristas, mt19937& gen) {
     uniform_real_distribution<double> peso(0, 1);
     uniform_int_distribution<int> dist(0, j-1);
     int res = dist(gen);
@@ -58,42 +55,37 @@ ii generarArista(int j, int nodo, vector<vector<ii>>& grafo, unordered_set<pair<
     return {peso(gen), res};
 }
 
-int generarNodo(int j) {
-    // Generamos un nodo aleatorio
-    random_device rd;
-    mt19937 gen(rd());
+int generarNodo(int j, mt19937& gen) {
     uniform_int_distribution<int> dist(0, j-1);
     return dist(gen);
 }
 
 // Cambiar función de multigrafo a grafo normal
 // n es la cantidad de nodos y e de enlaces
-void crearGrafo(vector<vector<ii>>& grafo, int i, int e) {
+void crearGrafo(vector<vector<ii>>& grafo, int i, int e, mt19937& gen) {
     // Se le asigna tamaño
     int v = 1 << i;
     grafo.resize(v);
     unordered_set<pair<int, int>, pair_hash> aristas; // Conjunto de aristas
 
     // Añadir arista random a 0
-    ii aristaInicial = generarArista(v, 0, grafo, aristas);
+    ii aristaInicial = generarArista(v, 0, grafo, aristas, gen);
     grafo[0].push_back(aristaInicial);
     grafo[aristaInicial.second].push_back({aristaInicial.first, 0});  // Añadimos la arista inversa
 
     // Rellenar los demás
     for (int k = 1; k < v; k++) {
+        // Caso especial donde todas las aristas apuntan al ultimo nodo
+        if(grafo[k].size() == v-1) {
+            k--;
+            ii aristaRandom = generarArista(v, k, grafo, aristas, gen);
+            grafo[k].push_back(aristaRandom);
+            grafo[aristaRandom.second].push_back({aristaRandom.first, k});
+            break;
+        }
         
-		//caso especial donde todas las aristas apuntan al ultimo  nodo
-		
-		if(grafo[k].size() == v-1){
-			k--;
-			ii aristaRandom = generarArista(v, k, grafo, aristas);
-			grafo[k].push_back(aristaRandom);
-			grafo[aristaRandom.second].push_back({aristaRandom.first, k});
-			break;
-		}
-		
-		// Generar arista random para el nodo
-        ii aristaRandom = generarArista(v, k, grafo, aristas);
+        // Generar arista random para el nodo
+        ii aristaRandom = generarArista(v, k, grafo, aristas, gen);
         grafo[k].push_back(aristaRandom);
         grafo[aristaRandom.second].push_back({aristaRandom.first, k});
     }
@@ -102,14 +94,15 @@ void crearGrafo(vector<vector<ii>>& grafo, int i, int e) {
     int h = (1 << e) - v;
     while (h > 0) {
         // Elegir el nodo
-        int indice = generarNodo(v);
-		//nos aseguramos de que un nodo no este lleno
-		
-		if (grafo[indice].size() == (v-1)){
-			continue;
-		}
+        int indice = generarNodo(v, gen);
+        
+        // Nos aseguramos de que un nodo no esté lleno
+        if (grafo[indice].size() == (v-1)) {
+            continue;
+        }
+
         // Generar arista random
-        ii aristaRandom = generarArista(v, indice, grafo, aristas);
+        ii aristaRandom = generarArista(v, indice, grafo, aristas, gen);
         grafo[indice].push_back(aristaRandom);
         grafo[aristaRandom.second].push_back({aristaRandom.first, indice});  // Añadimos la arista inversa
         h--;
@@ -119,6 +112,8 @@ void crearGrafo(vector<vector<ii>>& grafo, int i, int e) {
 
 
 int main(){
+	random_device rd;
+    mt19937 gen(rd());
 	cout << "------------------------- INICIO -------------------------" << endl;
 	// archivo para guardar resultados
 	ofstream archivo;
@@ -152,7 +147,7 @@ int main(){
 
 			// crea grafo
 			vector<vector<ii>> gr;
-			crearGrafo(gr, i, j);
+			crearGrafo(gr, i, j, gen);
 			cout << "Se creo el grafo " << endl;
 			// printGrafo(gr);
 
@@ -180,10 +175,10 @@ int main(){
 				cout << "Tiempo Heap: " << time_h << endl;
             	cout << endl;
 					
-				for(int k = 0; k < gr.size(); ++k) {
-					cout << "Distancia Nodo " << k << ": " << distancias[k] << endl; 
-					cout << "Previos Nodo " << k << ": " << previos[k] << endl; 
-				}
+				// for(int k = 0; k < gr.size(); ++k) {
+				// 	cout << "Distancia Nodo " << k << ": " << distancias[k] << endl; 
+				// 	cout << "Previos Nodo " << k << ": " << previos[k] << endl; 
+				// }
 
 
 				cout << "----------------------- FIBONACCI -----------------------" << endl;
@@ -199,10 +194,10 @@ int main(){
 				cout << "Tiempo Fibonacci: " << time_f << endl;
             	cout << endl;
 					
-				for(int k = 0; k < gr.size(); ++k) {
-					cout << "Distancia Nodo " << k << ": " << distanciasFib[k] << endl; 
-					cout << "Previos Nodo " << k << ": " << previosFib[k] << endl; 
-				}
+				// for(int k = 0; k < gr.size(); ++k) {
+				// 	cout << "Distancia Nodo " << k << ": " << distanciasFib[k] << endl; 
+				// 	cout << "Previos Nodo " << k << ": " << previosFib[k] << endl; 
+				// }
 
 				f++;
 
