@@ -48,9 +48,10 @@ void caminoMasCortoFib(int s, int n, vector<vector<ii>> gr, FibonacciHeap cola,
             if ((*pdistancia)[vecino] > nodo_d + vecino_d) {
                 (*pdistancia)[vecino] = nodo_d + vecino_d; //se actualiza el valor de la distancia en el arreglo
                 (*pPrevios)[vecino] = nodo;
-                //obtener referencia al nodo que almacena (distanciaAntigua, vecino)
-                Node* pVecino = cola.refNodo(vecino); 
+                
                 if(!cola.empty()){
+                    //obtener referencia al nodo que almacena (distanciaAntigua, vecino)
+                    Node* pVecino = cola.refNodo(vecino); 
                     cola.decreaseKey(pVecino , nodo_d + vecino_d);
                 }
                 

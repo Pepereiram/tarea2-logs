@@ -2,86 +2,86 @@ Resultados de la ejecución
 
 v: 2^10 = 1024
 e: 2^16 = 65536
-Tiempo promedio cola de prioridad Heap: 0.00806666
-Tiempo promedio cola de Fibonacci: 0.00912556
+Tiempo promedio cola de prioridad Heap: 0.00904512
+Tiempo promedio cola de Fibonacci: 0.00973792
 
 v: 2^10 = 1024
 e: 2^17 = 131072
-Tiempo promedio cola de prioridad Heap: 0.011579
-Tiempo promedio cola de Fibonacci: 0.0128118
+Tiempo promedio cola de prioridad Heap: 0.0134688
+Tiempo promedio cola de Fibonacci: 0.0139449
 
 v: 2^10 = 1024
 e: 2^18 = 262144
-Tiempo promedio cola de prioridad Heap: 0.0184721
-Tiempo promedio cola de Fibonacci: 0.0194764
+Tiempo promedio cola de prioridad Heap: 0.0202654
+Tiempo promedio cola de Fibonacci: 0.020393
 
 v: 2^12 = 4096
 e: 2^16 = 65536
-Tiempo promedio cola de prioridad Heap: 0.0214876
-Tiempo promedio cola de Fibonacci: 0.0276048
+Tiempo promedio cola de prioridad Heap: 0.0223414
+Tiempo promedio cola de Fibonacci: 0.02548
 
 v: 2^12 = 4096
 e: 2^17 = 131072
-Tiempo promedio cola de prioridad Heap: 0.0257103
-Tiempo promedio cola de Fibonacci: 0.0307123
+Tiempo promedio cola de prioridad Heap: 0.0263381
+Tiempo promedio cola de Fibonacci: 0.0298073
 
 v: 2^12 = 4096
 e: 2^18 = 262144
-Tiempo promedio cola de prioridad Heap: 0.0362634
-Tiempo promedio cola de Fibonacci: 0.0418137
+Tiempo promedio cola de prioridad Heap: 0.0344808
+Tiempo promedio cola de Fibonacci: 0.0372298
 
 v: 2^12 = 4096
 e: 2^19 = 524288
-Tiempo promedio cola de prioridad Heap: 0.0532524
-Tiempo promedio cola de Fibonacci: 0.0607421
+Tiempo promedio cola de prioridad Heap: 0.0487404
+Tiempo promedio cola de Fibonacci: 0.0516085
 
 v: 2^12 = 4096
 e: 2^20 = 1048576
-Tiempo promedio cola de prioridad Heap: 0.0733603
-Tiempo promedio cola de Fibonacci: 0.0789091
+Tiempo promedio cola de prioridad Heap: 0.0771131
+Tiempo promedio cola de Fibonacci: 0.0803004
 
 v: 2^12 = 4096
 e: 2^21 = 2097152
-Tiempo promedio cola de prioridad Heap: 0.125729
-Tiempo promedio cola de Fibonacci: 0.132089
+Tiempo promedio cola de prioridad Heap: 0.132658
+Tiempo promedio cola de Fibonacci: 0.133856
 
 v: 2^12 = 4096
 e: 2^22 = 4194304
-Tiempo promedio cola de prioridad Heap: 0.269347
-Tiempo promedio cola de Fibonacci: 0.278988
+Tiempo promedio cola de prioridad Heap: 0.27437
+Tiempo promedio cola de Fibonacci: 0.277593
 
 v: 2^14 = 16384
 e: 2^16 = 65536
-Tiempo promedio cola de prioridad Heap: 0.0760887
-Tiempo promedio cola de Fibonacci: 0.0968109
+Tiempo promedio cola de prioridad Heap: 0.0762965
+Tiempo promedio cola de Fibonacci: 0.0915367
 
 v: 2^14 = 16384
 e: 2^17 = 131072
-Tiempo promedio cola de prioridad Heap: 0.0836692
-Tiempo promedio cola de Fibonacci: 0.103611
+Tiempo promedio cola de prioridad Heap: 0.0846852
+Tiempo promedio cola de Fibonacci: 0.0990809
 
 v: 2^14 = 16384
 e: 2^18 = 262144
-Tiempo promedio cola de prioridad Heap: 0.0955148
-Tiempo promedio cola de Fibonacci: 0.115917
+Tiempo promedio cola de prioridad Heap: 0.0965036
+Tiempo promedio cola de Fibonacci: 0.11102
 
 v: 2^14 = 16384
 e: 2^19 = 524288
-Tiempo promedio cola de prioridad Heap: 0.111862
-Tiempo promedio cola de Fibonacci: 0.131996
+Tiempo promedio cola de prioridad Heap: 0.114566
+Tiempo promedio cola de Fibonacci: 0.128565
 
 v: 2^14 = 16384
 e: 2^20 = 1048576
-Tiempo promedio cola de prioridad Heap: 0.141777
-Tiempo promedio cola de Fibonacci: 0.16213
+Tiempo promedio cola de prioridad Heap: 0.142247
+Tiempo promedio cola de Fibonacci: 0.154046
 
 v: 2^14 = 16384
 e: 2^21 = 2097152
-Tiempo promedio cola de prioridad Heap: 0.195753
-Tiempo promedio cola de Fibonacci: 0.215901
+Tiempo promedio cola de prioridad Heap: 0.198679
+Tiempo promedio cola de Fibonacci: 0.209235
 
 v: 2^14 = 16384
 e: 2^22 = 4194304
-Tiempo promedio cola de prioridad Heap: 0.300303
-Tiempo promedio cola de Fibonacci: 0.31831
+Tiempo promedio cola de prioridad Heap: 0.305145
+Tiempo promedio cola de Fibonacci: 0.313844
 

@@ -174,12 +174,6 @@ int main(){
 				times_heap[f] = time_h;
 				cout << "Tiempo Heap: " << time_h << endl;
             	cout << endl;
-					
-				// for(int k = 0; k < gr.size(); ++k) {
-				// 	cout << "Distancia Nodo " << k << ": " << distancias[k] << endl; 
-				// 	cout << "Previos Nodo " << k << ": " << previos[k] << endl; 
-				// }
-
 
 				cout << "----------------------- FIBONACCI -----------------------" << endl;
 				cout << "Distancias usando Cola de Prioridad (Fibonacci Heap) para i = " << i << " y j = " << j << endl;
@@ -193,11 +187,6 @@ int main(){
 				times_fib[f] = time_f;
 				cout << "Tiempo Fibonacci: " << time_f << endl;
             	cout << endl;
-					
-				// for(int k = 0; k < gr.size(); ++k) {
-				// 	cout << "Distancia Nodo " << k << ": " << distanciasFib[k] << endl; 
-				// 	cout << "Previos Nodo " << k << ": " << previosFib[k] << endl; 
-				// }
 
 				f++;
 

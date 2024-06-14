@@ -59,11 +59,8 @@ public:
 
 
     Node* refNodo(int nodo){
-        if (posMap.find(nodo) == posMap.end()) {
-            throw runtime_error("Node not found in the heap");
-        }
         return posMap[nodo];
-    } 
+    }
 
     void insert(ii pair) {
         //Se crea nodo nuevo con la llave insertada
@@ -98,7 +95,7 @@ public:
         //se crea referencia para el antiguo nodo minimo
         Node* oldMin = minNode;
         // Verificamos que el minimo no sea nulo
-        if (oldMin != NULL) { // sus (si es nulo va directo al return)
+        if (oldMin != NULL) {
             
             if (oldMin->child != NULL) {
                 Node* child = oldMin->child;
@@ -114,10 +111,8 @@ public:
                     child = next;
                 } while (child != oldMin->child);
             }
-            //
             oldMin->left->right = oldMin->right; // z<->x<->w  = z -> w
             oldMin->right->left = oldMin->left;  // z<->x<->w  = z <- w
-            // ver si hay que borrar la memoria alocada para oldMin
 
             // Verificamos si el minimo es el unico nodo
             if (oldMin == oldMin->right) {
@@ -130,8 +125,6 @@ public:
             }
             n--;
         }
-        // Eliminamos el nodo del mapa
-        //posMap.erase(pairToString({oldMin->key, oldMin->vertice}));
         return oldMin->key;
     }
 
@@ -139,7 +132,6 @@ public:
     void consolidate() {
         // se fija un grado maximo 
         int maxDegree = ceil(log2(n)); // log (n)/log(2) = log2(n)
-        /////int maxDegree = 10 * log(n); // tener ojo xd  
         // Creamos el vector de nodos con los grados posibles para el heap
         vector<Node*> degreeTable(maxDegree + 1 , nullptr); 
         list<Node*> rootList;
@@ -217,7 +209,6 @@ public:
         y->childCut = false;
     }
 
-    // Que es el relator? el relator es un programa que se encarga de hacer la reducción de la fibbonacci heap
     void decreaseKey(Node* x, double key) {
         //Si la llave es mayor, no se cambia nada
         if (key > x->key) {
@@ -272,7 +263,7 @@ public:
         if (z != NULL) {
             //si nodo no esta marcado
             if (y->childCut == false) {
-                //se marca xd
+                //se marca
                 y->childCut = true;
             } else {
                 //si esta marcado, se corta y se sube por el arbol
@@ -283,20 +274,3 @@ public:
     }    
 };
 
-
-//Funcion para printear el FibonacciHeap
-void printFibonacciHeap(FibonacciHeap heap) {
-    list<Node*> rootList;
-    Node* current = heap.minNode;
-    cout << "se printea xd" << endl;
-    // Meter toda la lista enlazada root en una lista de c++
-    do {
-        rootList.push_back(current);
-        current = current->right;
-    } while (current != heap.minNode);
-    //iterar por la lista imprimiendo wea
-    for (Node* node : rootList) {
-        cout << "Nodo: " << node->vertice << " con llave: " << node->key << endl;
-    }
-    
-}
