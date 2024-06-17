@@ -29,7 +29,7 @@ void caminoMasCorto(int s, int n, vector<vector<ii>> gr, ColaPrioridad cola,
     }
     //PASO 5:
     //heapifear
-    cola.heapify(cola.heap, cola.heap.size(), 0);
+    cola.heapify(cola.heap.size(), 0);
     
     
     //PASO 6:
