@@ -10,7 +10,7 @@ un elemento de Q reordena la estructura del árbol
 */
 struct ColaPrioridad {
     vector<ii> heap;
-    unordered_map<int, double> posMap; // Map to store the position of nodes in the heap
+    unordered_map<int, int> posMap; // Tabla de hashing que mapea el vertice con su posicion en el heap
 
     void push(ii p) {
         heap.push_back(p);
@@ -20,9 +20,6 @@ struct ColaPrioridad {
 
     // Devuelve el elemento con mayor prioridad (el mínimo en este caso)
     ii top() {
-        if (heap.empty()) {
-            throw runtime_error("Heap is empty");
-        }
         return heap.front();
     }
 
@@ -33,70 +30,52 @@ struct ColaPrioridad {
         posMap[heap[0].second] = 0;
         posMap.erase(heap[final].second);
         heap.pop_back();
-        heapify(heap, final, 0);
+        heapify(final, 0);
     }
 
     // Verifica si el heap está vacío
-    bool empty() const {
+    bool empty() {
         return heap.empty();
     }
 
     // Función para disminuir la clave (distancia) de un nodo específico
-    void decreaseKey(int node, double newDist) {
-        int index = posMap[node];
-        heap[index].first = newDist;
-        // Adjust the heap after decrease
-        while (index != 0 && heap[parent(index)] > heap[index]) {
-            swap(heap[index], heap[parent(index)]);
-            posMap[heap[index].second] = index;
-            posMap[heap[parent(index)].second] = parent(index);
-            index = parent(index);
+    void decreaseKey(int vertice, double Dist) {
+        // se actualiza el peso en la tabla de hashing y en el heap
+        int indiceHeap = posMap[vertice];
+        heap[indiceHeap].first = Dist;
+        // nodo va escalando en el arbol mientras sea menor al padres
+        while (indiceHeap != 0 && heap[(indiceHeap-1)/2] > heap[indiceHeap]) {
+            swap(heap[indiceHeap], heap[(indiceHeap-1)/2]);
+            posMap[heap[indiceHeap].second] = indiceHeap;
+            posMap[heap[(indiceHeap-1)/2].second] = (indiceHeap-1)/2;
+            indiceHeap = (indiceHeap-1)/2;
         }
     }
 
-    void heapify(vector<ii>& array_in, int array_size, int subtree_root_index) {
-        // 
-        int largest_value = subtree_root_index;
-        int left = 2*subtree_root_index + 1;
-        int right = 2*subtree_root_index + 2;
-            
-        if (left < array_size && array_in[left] < array_in[largest_value]){
-            largest_value = left;
+    void heapify(int tamano_heap, int raiz_subarbol) {
+        //se define el nodo con menor peso como la raiz
+        int menor = raiz_subarbol;
+        //se calculan los indices de los nodos hijos a la raiz
+        int izq = 2*raiz_subarbol + 1;
+        int der = 2*raiz_subarbol + 2;
+        //si el hijo izquierdo existe y tiene menor peso, se guarda el hijo en variable "menor"
+        if (izq < tamano_heap && heap[izq] < heap[menor]) {
+            menor = izq;
         }
-
-        if (right < array_size && array_in[right] < array_in[largest_value]){
-            largest_value = right;
+        //si el hijo derecho existe y tiene menor peso, se guarda el hijo en variable "menor"
+        if (der < tamano_heap && heap[der] < heap[menor]) {
+            menor = der;
         }   
-
-        if (largest_value != subtree_root_index ) {
-            swap(array_in[subtree_root_index], array_in[largest_value]);
-            // Cambiamos los indices en el map para que coincidan con los nuevos indices
-            posMap[array_in[subtree_root_index].second] = subtree_root_index;
-            posMap[array_in[largest_value].second] = largest_value;
-            heapify(array_in, array_size, largest_value);
+        //si uno de los hijos era menor a la raíz
+        if (menor != raiz_subarbol ) {
+            //se cambian de posicion
+            swap(heap[raiz_subarbol], heap[menor]);
+            //cambiamos los indices en el map para que coincidan con los nuevos indices
+            posMap[heap[raiz_subarbol].second] = raiz_subarbol;
+            posMap[heap[menor].second] = menor;
+            //se hace llamada recursiva
+            heapify(tamano_heap, menor);
         }
     }
     
-    // Imprime los elementos del heap (para depuración)
-    void printHeap() const {
-        for (const auto& element : heap) {
-            cout << "(" << element.first << ", " << element.second << ") ";
-        }
-        cout << endl;
-    }
-
-
-private:
-    // Helper functions
-    int parent(int i) {
-        return (i - 1) / 2;
-    }
-
-    int left(int i) {
-        return 2 * i + 1;
-    }
-
-    int right(int i) {
-        return 2 * i + 2;
-    }
 };

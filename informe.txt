@@ -1,0 +1,78 @@
+/subsection{ Implementación de cola de prioridad de fibonacci }
+
+Con respecto a las estructuras de datos utilizadas para implementar la cola de fibonacci, se crean dos clases en c++:
+- Nodo
+- FibonacciHeap
+donde Nodo representa un nodo del heap y FibonacciHeap es la cola de prioridad.
+
+Con respecto a la primera de estas, contiene variables de instancia que guardan el peso de una arista en una variable llamada "key", 
+el vertice de la arista en una variable llamada "vertice", punteros a los nodos izquierdo, derecho, padre e hijo, el grado del nodo y
+finalmente una variable booleana que marca si el subárbol del nodo fue cortado durante algún decrease key. Esta clase cuenta con un único 
+método correspondiente a un constructor, el cual recibe una tupla (peso,vertice) e inicializa una instancia de un nodo con esta información 
+con referencias nulas en los padres e hijos y punteros izquierdo y derecho apuntando a si mismos.
+
+Por otra parte, la clase FibonacciHeap cuenta con tres variables de instancia: "n" que almacena la cantidad total de nodos en el heap, "minNode" que corresponde
+a un puntero al nodo mínimo y "posMap" que es una tabla de hashing que mapea el indice del vertice con el puntero al nodo del heap que lo contiene. 
+En este caso el puntero minNode cumple 2 propósitos, el de acceder al mínimo en tiempo constante y el de tener una referencia a la root list del heap. 
+La decisión de implementar la tabla de hashing surge de la necesidad de implementar decrease key en tiempo amortizado constante, pues esta función recibe como parámetro
+el puntero al nodo dentro del heap y en el algoritmo de djikstra solo se tiene información acerca del indice del vértice, por lo que no es factible realizar una busqueda en el árbol de
+orden 0(n). Utilizando hashing nos aseguramos que ingresar parámetros a decrease key toma tiempo constante. 
+
+A continuación se profundiza sobre los métodos implementados en la clase FibonacciHeap.
+
+\subsubsection{ empty y refNodo }
+
+Son dos métodos que sirven de manera auxiliar para otros métodos de esta clase o para otros algoritmos como dijkstra. 
+El método empty indicará si el heap está vacío y refNodo recibe como parámetro el indice de un vértice y retorna el puntero
+al nodo del heap que contiene este vértice utilizando la tabla de hashing "posMap".
+
+\subsubsection{ insert }
+
+Recibe como parámetro una tupla (peso,vertice), la implementación de insert es estándar, corresponde a añadir un nodo nuevo en la root list entre medio del nodo mínimo y el nodo 
+que estaba a su derecha, luego si el peso del nodo nuevo es menor al del mínimo, el puntero minNode ahora apuntará a este. En este caso se añade también el puntero al nodo nuevo 
+a la tabla de hashing usando como llave el índice del vértice.
+
+\subsubsection{ getMin }
+ 
+ Este método no recibe parámetros y simplemente retorna en tiempo constante una tupla que contiene el peso (key) y vertice del nodo que esta en el puntero minNode.
+
+\subsubsection{ removeMin }
+
+Este método tampoco recibe parámetros, se encarga de extraer el nodo mínimo del heap, reordenar el bosque manteniendo las propiedades
+de heap en cada árbol y encontrar el nuevo mínimo. La implementación de este método en conjunto de sus métodos auxiliares (consolidate y link)
+está fuertemente basada en el pseudo código presentado en el libro  “Introduction to Algorithms” de Cormen et al, siendo prácticamente en su totalidad
+una adaptación a código de C++, por lo cual se puede asegurar que se cumple la cota amortizada O(log n). Con respecto a ciertos detalles acerca de la implementación
+que en el libro no están específicados, en consolidate para la cota superior del máximo grado que puede tener un nodo en un heap de n elementos (que está estrechamente relacionado con
+el tamaño de la degree table), se utilizó log_2 n, que se obtiene de la sección 19.4 del libro. También, en consolidate para recorrer la root list en el paso donde se rellena la degree table,
+se arma antes una lista de C++ con todos los elementos de la root list para iterar con mayor facilidad (recordando que en la clase FibonacciHeap la unica referencia que se tiene a esta lista es por medio del minNode). 
+
+\subsubsection{ decreaseKey }
+
+Este método recibe como parámetros un puntero al nodo al cual se le quiere cambiar su key (peso en este contexto) y el valor de la key nueva. Su objetivo es mantener la propiedad del heap (nodo padre contiene key menor que la de sus hijos)
+luego de realizar la modificación en el nodo objetivo, recortando el subárbol que lo contiene y pegandolo en la root list en el caso en el que no se cumpla la propiedad (esto se repite en cadena con respecto al padre si es que en alguna instancia anterior
+uno de sus hijos ya había sido cortado). Para la implementación de este método nuevamente se realizo una adaptación del pseudo código del libro  “Introduction to Algorithms”, programando además los métodos auxiliares "cut" y "cascadingCut". No se incorporan
+mayores modificaciones a la lógica del algoritmo, por lo que se asegura que esta implementación tiene orden amortizado O(1). Es importante notar que el paso previo, que corresponde a obtener el puntero al nodo dado el índice del vertice, también tiene costo constante, 
+por lo que siempre que se invoquen ambas funciones en conjunto el costo seguira siendo O(1). 
+
+/subsection{ Implementación del algoritmo de Dijkstra }
+
+Este algoritmo fue implementado dos veces, una vez para el Heap normal y otra para la cola de Fibonacci, esto debido a que existen algunos cambios sutiles en algunos de los pasos del algoritmo dependiendo del tipo de cola.
+La implementación de ambos está basada en el pseudo código del enunciado, sin embargo, a diferencia de este no hay un retorno de dos arreglos de distancias y previos, si no que la 
+función recibe como parámetro dos punteros a arreglos vacíos que se irán modificando y almacenarán estos mismos resultados. 
+Entrando en más detalle, el encabezado de ambas funciones es el siguiente : "s" el vertice inicial de la busqueda, "n" el numero de vertices del grafo,
+"gr" el grafo representado como lista enlazada, "cola" la cola de prioridad de cada caso y finalmente los punteros "pdistancias" y "pPrevios" que corresponden 
+a los punteros de los arreglos que almacenan la respuesta. Con respecto a algunos detalles en los pasos iniciales que comparten ambos algoritmos, cuentan con un 
+resize inicial de los arreglos que contienen las respuestas. Para la inicialización de los valores de los arreglos de distancias y previos, la distancia infinita se define como 2^23 pues es el peor caso para grafo de 2^23 aristas donde todos los pesos son 1. 
+En el arreglo de previos el valor indefinido se representa con -2 y en el nodo previo del inicial se marca con -1. A continuación se detallan las diferencias de implementación de cada implementación.
+
+/subsubsection{ Dijkstra para heap normal }
+
+En los primeros pasos cuando se hace push de las tuplas (peso,vertice) cada inserción se realiza en tiempo constante, pues solo se hace push_back del valor en un vector. Luego, a diferencia de la cola de fibonacci, se realiza un heapify del arreglo "desordenado" para que
+contenga la estructura y propiedades de un heap en orden O(n). Como las inserciones y el heapify son de orden O(n), luego la construcción del heap es O(n). Con respecto a los pasos siguientes, siguen el pseudo código del enunciado al pie de la letra:
+se realiza un pop de la cola de prioridad hasta que quede vacía, luego se modifican las distancias de los vecinos que estan almacendas en la respuesta cuando sea el caso.
+
+/subsubsection{ Dijkstra para cola de fibonacci }
+
+En los primeros pasos no se realiza un heapify al insertar las tuplas (peso,vertice), pues la estructura inicial (todos los elementos en una lista enlazada) es válida para una cola de fibonacci. Cada inserción es de orden constante, por lo que armar la cola será de un orden de O(n).
+Con respecto a los pasos siguientes, si bien el código es parecido al del heap normal, existen dos grandes diferencias: la primera de estas es que se debe encontrar la referencia al nodo que se quiere modificar antes de realizar el decrease key, por lo que se invoca antes al método refNodo del 
+la cola, por otra parte la segunda diferencia es que se agrega una condición cuando la cola se vacía en el último paso y se realiza un decrease key, de lo contrario la ejecución se detiene por un segmentation fault.
