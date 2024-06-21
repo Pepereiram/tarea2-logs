@@ -24,22 +24,22 @@ import numpy as np
 # ------ Datos Dijkstra - Felipe ------
 
 # Resultados ejecución v = 2^10
-# v_10 = 1024
-# e_values_v10 = [2**16, 2**17, 2**18]
-# tiempos_heap_v10 = [0.0082358, 0.0110751, 0.0181433]
-# tiempos_fib_v10 = [0.00988578, 0.0126283, 0.0216387]
+v_10 = 1024
+e_values_v10 = [2**16, 2**17, 2**18]
+tiempos_heap_v10 = [0.0082358, 0.0110751, 0.0181433]
+tiempos_fib_v10 = [0.00988578, 0.0126283, 0.0216387]
 
-# # Resultados de la ejecución v = 2^12
-# v_12 = 4096
-# e_values_v12 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
-# tiempos_heap_v12 = [0.020703, 0.0257532, 0.0322007, 0.0482332, 0.0767112, 0.116196, 0.26939]
-# tiempos_fib_v12 = [0.0274966, 0.0321052, 0.0392745, 0.0550829, 0.0842927, 0.127408, 0.291776]
+# Resultados de la ejecución v = 2^12
+v_12 = 4096
+e_values_v12 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
+tiempos_heap_v12 = [0.020703, 0.0257532, 0.0322007, 0.0482332, 0.0767112, 0.116196, 0.26939]
+tiempos_fib_v12 = [0.0274966, 0.0321052, 0.0392745, 0.0550829, 0.0842927, 0.127408, 0.291776]
 
-# # Resultados de la ejecución v = 2^14
-# v_14 = 16384
-# e_values_v14 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
-# tiempos_heap_v14 = [0.0713887, 0.0786391, 0.0900607, 0.106309, 0.1354, 0.184299, 0.289496]
-# tiempos_fib_v14 = [0.0910601, 0.0992355, 0.110827, 0.129052, 0.157266, 0.212939, 0.319063]
+# Resultados de la ejecución v = 2^14
+v_14 = 16384
+e_values_v14 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
+tiempos_heap_v14 = [0.0713887, 0.0786391, 0.0900607, 0.106309, 0.1354, 0.184299, 0.289496]
+tiempos_fib_v14 = [0.0910601, 0.0992355, 0.110827, 0.129052, 0.157266, 0.212939, 0.319063]
 
 # ------ Datos Dijkstra - Pepe ------
 
@@ -66,20 +66,20 @@ import numpy as np
 
 # ------ Datos Dijkstra - Pepe2 ------
 # Resultados ejecución v = 2^10
-v_10 = 1024
-e_values_v10 = [2**16, 2**17, 2**18]
-tiempos_heap_v10 = [0.00904512, 0.0134688, 0.0202654]
-tiempos_fib_v10 = [0.00973792, 0.0139449, 0.020393]
-# Resultados de la ejecución v = 2^12
-v_12 = 4096
-e_values_v12 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
-tiempos_heap_v12 = [0.0223414, 0.0263381, 0.0344808, 0.0487404, 0.0771131, 0.132658, 0.27437]
-tiempos_fib_v12 = [0.02548, 0.0298073, 0.0372298, 0.0516085, 0.0803004, 0.133856, 0.277593]
-# Resultados de la ejecución v = 2^14
-v_14 = 16384
-e_values_v14 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
-tiempos_heap_v14 = [0.0762965, 0.0846852, 0.0965036, 0.114566, 0.142247, 0.198679, 0.305145]
-tiempos_fib_v14 = [0.0915367, 0.0990809, 0.11102, 0.128565, 0.154046, 0.209235, 0.313844]
+# v_10 = 1024
+# e_values_v10 = [2**16, 2**17, 2**18]
+# tiempos_heap_v10 = [0.00904512, 0.0134688, 0.0202654]
+# tiempos_fib_v10 = [0.00973792, 0.0139449, 0.020393]
+# # Resultados de la ejecución v = 2^12
+# v_12 = 4096
+# e_values_v12 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
+# tiempos_heap_v12 = [0.0223414, 0.0263381, 0.0344808, 0.0487404, 0.0771131, 0.132658, 0.27437]
+# tiempos_fib_v12 = [0.02548, 0.0298073, 0.0372298, 0.0516085, 0.0803004, 0.133856, 0.277593]
+# # Resultados de la ejecución v = 2^14
+# v_14 = 16384
+# e_values_v14 = [2**16, 2**17, 2**18, 2**19, 2**20, 2**21, 2**22]
+# tiempos_heap_v14 = [0.0762965, 0.0846852, 0.0965036, 0.114566, 0.142247, 0.198679, 0.305145]
+# tiempos_fib_v14 = [0.0915367, 0.0990809, 0.11102, 0.128565, 0.154046, 0.209235, 0.313844]
 
 # Función para realizar la regresión lineal y obtener la pendiente
 def fitting(e_values, tiempos):
@@ -93,12 +93,28 @@ def fitting(e_values, tiempos):
     # Calcular la recta de ajuste
     ajuste = slope * e_values + intercept
     
-    return slope, ajuste, r_value
+    return slope, ajuste, r_value, intercept
+
+
+
+def valores_teoricos(e_values, v, pendiente_heap, pendiente_fib):
+    heap = [e * np.log(v) for e in e_values]
+    fib = [e + v * np.log(v) for e in e_values]
+    heap_teorico_ajustado = [pendiente_heap * valor for valor in heap]
+    fib_teorico_ajustado = [pendiente_fib * valor for valor in fib]
+    return heap_teorico_ajustado, fib_teorico_ajustado
 
 def graficar_resultados(e_values, tiempos_heap, tiempos_fib, v, subplot_position):
-    pendiente_heap, ajuste_heap, r_value_heap = fitting(e_values, tiempos_heap)
-    pendiente_fib, ajuste_fib, r_value_fib = fitting(e_values, tiempos_fib)
+    pendiente_heap, ajuste_heap, r_value_heap, intercept_heap = fitting(e_values, tiempos_heap)
+    pendiente_fib, ajuste_fib, r_value_fib, intercept_fib = fitting(e_values, tiempos_fib)
     
+    # Multiplicar las rectas teóricas por la pendiente obtenida en el ajuste lineal
+    heap_teorico, fib_teorico = valores_teoricos(e_values, v, pendiente_heap, pendiente_fib)
+    # Imprimimos los valores de las pendientes y los interceptos
+    print(f'Pendiente Heap v = 2^{v}: {pendiente_heap}')
+    print(f'Intercepto Heap v = 2^{v}: {intercept_heap}')
+    print(f'Pendiente Fibonacci v = 2^{v}: {pendiente_fib}')
+    print(f'Intercepto Fibonacci v = 2^{v}: {intercept_fib}')
     plt.subplot(3, 1, subplot_position)
     # Muestro el valor del coeficiente de determinación en la leyenda
     plt.plot(e_values, tiempos_heap, 'o', label=f'Heap - R² = {r_value_heap:.4f}', color='blue')
@@ -106,6 +122,8 @@ def graficar_resultados(e_values, tiempos_heap, tiempos_fib, v, subplot_position
     plt.plot(e_values, ajuste_heap, '-', color='blue')
     plt.plot(e_values, tiempos_fib, 'o', label=f'Fibonacci R² = {r_value_fib:.4f}', color='red')
     plt.plot(e_values, ajuste_fib, '-', color='red')
+    plt.plot(e_values, heap_teorico, '--', label='Teórico Heap ajustado', color='cyan')
+    plt.plot(e_values, fib_teorico, '--', label='Teórico Fibonacci ajustado', color='magenta')
     plt.xlabel('Cantidad de aristas (e)')
     plt.xticks(e_values, [f'2^{e_val.bit_length()-1}' for e_val in e_values], rotation=45, fontsize=7)
     plt.ylabel('Tiempo (s)')
